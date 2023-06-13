@@ -1,0 +1,35 @@
+[
+	{
+		"title": "chaleco",
+		"description": "Amarillo reflectante",
+		"code": "2323",
+		"price": 7000,
+		"status": false,
+		"stock": 10,
+		"category": "Construcciones",
+		"thumbnails": [],
+		"id": 1
+	},
+	{
+		"title": "pasdas",
+		"description": "Amarillo reflectante",
+		"code": "232321",
+		"price": 700023,
+		"status": false,
+		"stock": 10,
+		"category": "Construcciones",
+		"thumbnails": [],
+		"id": 3
+	},
+	{
+		"title": "anashe",
+		"description": "Amarillo reflectante",
+		"code": "2",
+		"price": 700023,
+		"status": false,
+		"stock": 10,
+		"category": "Construcciones",
+		"thumbnails": [],
+		"id": 4
+	}
+]
