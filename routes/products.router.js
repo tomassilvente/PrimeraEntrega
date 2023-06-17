@@ -5,7 +5,6 @@ import ProductManager from './management/ProductManager.js'
 const router = Router()
 const manager = new ProductManager('public/data/products')
 
-
 router.get('/', async(req, res)=>{
     let products = await manager.getProducts()
     res.send({products})

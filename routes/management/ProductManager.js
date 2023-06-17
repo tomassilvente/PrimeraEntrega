@@ -8,7 +8,7 @@ export default class ProductManager{
         this.id = 1
     }
 
-    async getProducts(res) {
+    async getProducts() {
         try {
             if (fs.existsSync(this.archivo)) {
                 const data = await fs.promises.readFile(this.archivo, "utf-8")
@@ -24,7 +24,7 @@ export default class ProductManager{
         }
     }
 
-    async getProductById(id, res) {
+    async getProductById(id) {
         try {
             if (fs.existsSync(this.archivo)) {
                 const data = await fs.promises.readFile(this.archivo, "utf-8")
