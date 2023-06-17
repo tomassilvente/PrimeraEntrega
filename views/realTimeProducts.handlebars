@@ -1,8 +1,12 @@
 <div>
     <div>
     <h1>Productos Realtime</h1>
-    <div>
-        <p id="log"></p>
+    <div id="prods">
+    {{#each products}}
+            <h2>{{this.title}}</h2>
+            <h3>{{this.price}}</h3>
+            <p>{{this.stock}}</p>
+    {{/each}}
     </div>
 </div>
 </div>

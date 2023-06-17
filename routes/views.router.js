@@ -10,8 +10,9 @@ router.get('/', async(req,res)=>{
     res.render('home',{products})
 })
 
-router.get('/realtimeproducts', (req, res)=>{
-    res.render('realTimeProducts')
+router.get('/realtimeproducts', async(req, res)=>{
+    let products = await prodMan.getProducts()
+    res.render('realTimeProducts',{products})
 })
 
 export default router

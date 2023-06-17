@@ -14,19 +14,24 @@ const socketServer = new Server(httpserver)
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname+'/views')
 app.set('view engine','handlebars')
 app.use(express.static(__dirname+'/public'))
-app.use('/', viewRouter)
 
+app.use('/', viewRouter)
 app.use('/api/products',productsRouter)
 app.use('/api/carts',carsRouter)
 
+
+const products = []
+
 socketServer.on('connection', socket=>{
     console.log("Comunicandome")
-
-    socket.on('log', data=>{
-        socketServer.emit('log', data)
+    
+    socket.on("products", data=>{
+        products.push({data})
+        socketServer.emit('productos',{productos})
     })
 })

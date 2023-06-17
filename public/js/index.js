@@ -1,15 +1,17 @@
-import ProductManager from "../../routes/management/ProductManager.js"
-
 const socket = io();
 
-let prodMan = new ProductManager('public/data/products')
+const productos = document.getElementById('prods')
 
-const log = document.getElementById('log')
+productos.addEventListener('input',evt=>{
+    if(evt === productos){
+        socket.emit('message', productos)
+    }
+})
 
-socket.on('log', async data=>{
-    let logs = await prodMan.getProducts()
-    data.logs.forEach(log=>{
-        logs +=`${log.message} <br/>`
+socket.on('productos',data=>{
+    let prods=''
+    data.productos.forEach(prods=>{
+        prods += `Produco ${productos.title}<br />`
     })
-    log.innerHTML=logs
+    productos.innerHTML=prods
 })
