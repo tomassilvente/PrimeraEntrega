@@ -2,34 +2,50 @@
 	{
 		"title": "chaleco",
 		"description": "Amarillo reflectante",
-		"code": "2323",
+		"code": "102",
 		"price": 7000,
-		"status": false,
+		"status": true,
 		"stock": 10,
 		"category": "Construcciones",
-		"thumbnails": [],
+		"thumbnails": [
+			"chaleco.jpeg"
+		],
 		"id": 1
 	},
 	{
-		"title": "pasdas",
-		"description": "Amarillo reflectante",
-		"code": "232321",
-		"price": 700023,
-		"status": false,
-		"stock": 10,
+		"title": "Casco",
+		"description": "Blanco",
+		"code": "103",
+		"price": 13000,
+		"status": true,
+		"stock": 20,
 		"category": "Construcciones",
-		"thumbnails": [],
+		"thumbnails": [
+			"casco1.jpeg",
+			"casco2.jpg"
+		],
 		"id": 3
 	},
 	{
-		"title": "anashe",
-		"description": "Amarillo reflectante",
-		"code": "2",
-		"price": 700023,
-		"status": false,
-		"stock": 10,
+		"title": "Botas De Lluvia",
+		"description": "Amarillo engomado",
+		"code": "104",
+		"price": 10000,
+		"status": true,
+		"stock": 7,
 		"category": "Construcciones",
 		"thumbnails": [],
 		"id": 4
+	},
+	{
+		"title": "Lentes de Proteccion",
+		"description": "Cilicona Blancos",
+		"code": "107",
+		"price": 14000,
+		"status": true,
+		"stock": 4,
+		"category": "Construcciones",
+		"thumbnails": "Lentes.jpg",
+		"id": 1
 	}
 ]

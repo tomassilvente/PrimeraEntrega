@@ -16,4 +16,3 @@ const storage = multer.diskStorage({
 
 export const __dirname = dirname(__filename)
 export const uploader = multer({storage})
-

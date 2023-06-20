@@ -4,6 +4,7 @@ import ProductManager from './management/ProductManager.js'
 
 const router = Router()
 const manager = new ProductManager('public/data/products')
+export const productos = await manager.getProducts()
 
 router.get('/', async(req, res)=>{
     let products = await manager.getProducts()
@@ -13,6 +14,7 @@ router.get('/', async(req, res)=>{
 router.get('/:pid', async(req, res)=>{
     let product = await manager.getProductById(req.params.pid)
     res.send({product})
+    
 })
 
 router.post('/',uploader.single('file'), function(req,res){

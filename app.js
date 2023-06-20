@@ -3,9 +3,9 @@ import productsRouter from './routes/products.router.js'
 import carsRouter from './routes/carts.router.js'
 import viewRouter from './routes/views.router.js'
 import handlebars from "express-handlebars"
+import { productos } from './routes/products.router.js'
 import {__dirname} from "./utils.js"
 import { Server } from 'socket.io'
-
 
 const app = express()
 const httpserver = app.listen(8080, () => console.log("Server Arriba"))
@@ -24,14 +24,14 @@ app.use('/', viewRouter)
 app.use('/api/products',productsRouter)
 app.use('/api/carts',carsRouter)
 
-
-const products = []
+const products = productos
 
 socketServer.on('connection', socket=>{
     console.log("Comunicandome")
-    
-    socket.on("products", data=>{
-        products.push({data})
-        socketServer.emit('productos',{productos})
+
+    socket.on('message', data=>{
+        console.log(data)
+        socketServer.emit('productos',{products})
     })
+
 })
