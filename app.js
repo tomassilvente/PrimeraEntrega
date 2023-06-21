@@ -27,11 +27,12 @@ app.use('/api/carts',carsRouter)
 const products = productos
 
 socketServer.on('connection', socket=>{
-    console.log("Comunicandome")
-
-    socket.on('message', data=>{
+    console.log("Comunicandome con", socket.id)
+    
+    socket.on('products', data=>{
         console.log(data)
-        socketServer.emit('productos',{products})
+        //products.push(data)
+        socketServer.emit('products',{products})
     })
 
 })

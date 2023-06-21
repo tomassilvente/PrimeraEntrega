@@ -1,27 +1,29 @@
 const socket = io();
 
-const productos = document.getElementById('prods');
+const productos = document.getElementById('prods')
 
-socket.emit('message', productos)
+socket.emit('products', productos)
 
-// productos.addEventListener('input', evt => {
+productos.addEventListener('input', evt => {
 
-//     const inputValue = evt.target.value;
+    const inputValue = evt.target.value;
 
-//     // Emitir el valor del input a través del socket
+    // Emitir el valor del input a través del socket
 
-//     socket.emit('message', inputValue);
+    socket.emit('products', inputValue);
 
-// });
+});
 
-socket.on('productos', data => {
-    console.log(data)
+socket.on('products', data => {
+   
     let prodsHTML = '';
 
-    data.productos.forEach(producto => {
-        prodsHTML += `Producto: ${producto.title}`;
+    data.products.forEach(producto => {
+        console.log(producto)
+        prodsHTML += `Producto: ${producto.title}<br/> precio: $${producto.price} <hr/>`;
     });
 
     // Actualizar la vista con los nuevos productos
     productos.innerHTML = prodsHTML;
 });
+
