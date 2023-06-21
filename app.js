@@ -3,7 +3,7 @@ import productsRouter from './routes/products.router.js'
 import carsRouter from './routes/carts.router.js'
 import viewRouter from './routes/views.router.js'
 import handlebars from "express-handlebars"
-import { productos } from './routes/products.router.js'
+import { manager } from './routes/products.router.js'
 import {__dirname} from "./utils.js"
 import { Server } from 'socket.io'
 
@@ -24,15 +24,21 @@ app.use('/', viewRouter)
 app.use('/api/products',productsRouter)
 app.use('/api/carts',carsRouter)
 
-const products = productos
+let products = await manager.getProducts()
 
 socketServer.on('connection', socket=>{
-    console.log("Comunicandome con", socket.id)
-    
-    socket.on('products', data=>{
-        console.log(data)
-        //products.push(data)
+    console.log("Comunicandome")   
+    socketServer.emit('products',{products})
+        
+    socket.on('products',async data=>{
+        await manager.addProduct(data)
+        products = await manager.getProducts()
         socketServer.emit('products',{products})
     })
 
+    socket.on('eliminar', async data=>{
+        await manager.removeProductById(data)
+        products = await manager.getProducts()
+        socketServer.emit('products',{products})
+    })
 })

@@ -1,8 +1,29 @@
 <div>
     <div>
     <h1>Productos Realtime</h1>
-    <hr />
-    <h3 id="prods">{{products}}</h3>
+    <hr >
+    <form>
+        <input type='text' name="title" id="title" placeholder="Producto">
+        <input type='text' name="description" id="description" placeholder="descripcion">
+        <br>
+        <input type='number' name="price" id="price" placeholder="precio">
+        <input type='text' name="code" id="code" placeholder="codigo">
+        <br>
+        <input type='text' name="status" id="status" placeholder="estado(true/false)">
+        <input type='number' name="stock" id="stock" placeholder="stock">
+        <br>
+        <input type='text' name="category" id="category" placeholder="categoria">
+        <button type="submit" id="form">Enviar!</button>
+    </form>
+    <hr>
+    <h3>Eliminar un producto por su ID</h3>
+    <form>
+        <input type="number" name="delete" id="id">
+        <button type="submit" id="delete"> Eliminar </button>
+    </form>
+    <br>
+    <hr >
+    <p id="prods"></p>
 </div>
 </div>
 <script src="/socket.io/socket.io.js"></script>

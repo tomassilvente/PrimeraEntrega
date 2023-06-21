@@ -43,7 +43,7 @@ export default class ProductManager{
         }
     }
 
-    async addProduct(producto, res) {
+    async addProduct(producto) {
         try {
             if (fs.existsSync(this.archivo)) {
                 const data = await fs.promises.readFile(this.archivo, "utf-8")
@@ -64,7 +64,7 @@ export default class ProductManager{
                     if (!producto.thumbnails) producto.thumbnails = []
                     producto.price = Number(producto.price)
                     producto.stock = Number(producto.stock)
-                    producto.id = this.id 
+                    producto.id = this.id
                     this.id++
                     this.productos.push(producto)
                     await fs.promises.writeFile(this.archivo, JSON.stringify(this.productos, null, "\t"))
@@ -92,7 +92,7 @@ export default class ProductManager{
         }
     }
 
-    async updateProductById(id, producto, res) {
+    async updateProductById(id, producto) {
         try {
             if (fs.existsSync(this.archivo)) {
                 const data = await fs.promises.readFile(this.archivo, "utf-8")
@@ -114,7 +114,7 @@ export default class ProductManager{
         }
     }
 
-    async removeProductById(id, res) {
+    async removeProductById(id) {
         try {
             if (fs.existsSync(this.archivo)) {
                 const data = await fs.promises.readFile(this.archivo, "utf-8")
@@ -124,6 +124,7 @@ export default class ProductManager{
                     if (index !== -1) {
                         this.productos.splice(index, 1)
                         await fs.promises.writeFile(this.archivo, JSON.stringify(this.productos, null, "\t"))
+                        console.log("Producto Eliminado")
                     }
                 } 
                 else return console.log("Producto no encontrado")     
