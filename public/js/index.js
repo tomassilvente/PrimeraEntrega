@@ -1,5 +1,6 @@
 const socket = io();
 
+//PRODUCTOS
 const productos = document.getElementById('prods')
 const form = document.getElementById('form')
 const eliminar = document.getElementById('delete')
@@ -32,3 +33,5 @@ socket.on('products', data => {
     productos.innerHTML = prodsHTML;
 
 });
+
+
