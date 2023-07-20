@@ -1,7 +1,7 @@
 <div>
-    <div>
-    <h1>Productos Realtime</h1>
-    <hr >
+    <h1>Todos los Productos</h1>
+    <hr>
+    <h2>Agregar un nuevo producto</h2>
     <form>
         <input type='text' name="title" id="title" placeholder="Producto">
         <input type='text' name="description" id="description" placeholder="descripcion">
@@ -16,24 +16,25 @@
         <button type="submit" id="form">Enviar!</button>
     </form>
     <hr>
-    <h3>Eliminar un producto por su ID</h3>
-    <form>
-        <input type="number" name="delete" id="id">
-        <button type="submit" id="delete"> Eliminar </button>
-    </form>
-    <br>
-    <hr >
-    <p id="prods"></p>
+    {{#each products}}
+        <b>{{title}}</b>
+        <br>
+        <p>{{description}}</p>
+        <p>Precio: ${{price}}</p>
+        <p>{{_id}}</p>
+        <a href="/products/{{_id}}"><button>Detalle</button></a>
+        <hr>
+    {{/each}}
     {{#if hasPrevPage}}
         <a href="/products?page={{prevPage}}"><button>Anterior</button></a>
     {{/if}}
     {{#if hasNextPage}}
         <a href="/products?page={{nextPage}}"><button>Siguente</button></a>
     {{/if}}
-        <br>
-        <a href="/products?page={{prevLink}}"><button>Anterior</button></a>
-        <a href="/products?page={{nextLink}}"><button>Siguente</button></a>
-</div>
+    <br><br>
+        <a href="/products?page={{prevLink}}"><button>Página Anterior</button></a>
+        <a href="/products?page={{nextLink}}"><button>Página Siguente</button></a>
+
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="../js/index.js"></script>

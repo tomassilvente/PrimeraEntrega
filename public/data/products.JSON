@@ -47,5 +47,16 @@
 		"category": "Construcciones",
 		"thumbnails": "Lentes.jpg",
 		"id": 5
+	},
+	{
+		"title": "Campera Rompeviento",
+		"description": "barato",
+		"price": 14000,
+		"code": "108",
+		"status": true,
+		"stock": 12,
+		"category": "Construcción",
+		"thumbnails": [],
+		"id": 1
 	}
 ]

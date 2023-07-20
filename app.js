@@ -3,7 +3,7 @@ import productsRouter from './routes/products.router.js'
 import carsRouter from './routes/carts.router.js'
 import viewRouter from './routes/views.router.js'
 import handlebars from "express-handlebars"
-import { manager } from './routes/products.router.js'
+import { productDBManager } from './routes/products.router.js'
 import {__dirname} from "./utils.js"
 import { Server } from 'socket.io'
 import mongoose from 'mongoose'
@@ -25,7 +25,8 @@ app.use('/', viewRouter)
 app.use('/api/products',productsRouter)
 app.use('/api/carts',carsRouter)
 
-let products = await manager.getProducts()
+
+let products = await productDBManager.getAll()
 const message = []
 
 socketServer.on('connection', socket=>{
@@ -33,14 +34,14 @@ socketServer.on('connection', socket=>{
     socketServer.emit('products',{products})
         
     socket.on('products',async data=>{
-        await manager.addProduct(data)
-        products = await manager.getProducts()
+        await productDBManager.saveProducts(data)
+        products = await productDBManager.getAll()
         socketServer.emit('products',{products})
     })
 
     socket.on('eliminar', async data=>{
-        await manager.removeProductById(data)
-        products = await manager.getProducts()
+        await productDBManager.deleteProduct(data)
+        products = await productDBManager.getAll()
         socketServer.emit('products',{products})
     })
 

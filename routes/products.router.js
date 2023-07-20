@@ -4,8 +4,8 @@ import ProductManager from './management/ProductManager.js'
 import Products from "./dao/dbManagers/products.js";
 
 const router = Router()
-const productDBManager = new Products()
-export const manager = new ProductManager('public/data/products')
+export const productDBManager = new Products()
+const manager = new ProductManager('public/data/products')
 
 router.get('/', async(req, res)=>{
     //let products = await manager.getProducts()

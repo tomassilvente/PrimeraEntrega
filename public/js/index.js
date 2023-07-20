@@ -21,17 +21,3 @@ eliminar.addEventListener('click',(evt)=>{
     let id = Number(document.getElementById('id').value)
     socket.emit('eliminar',id)
 })
-
-socket.on('products', data => {
-    
-    let prodsHTML = '';
-    data.products.forEach(producto => {
-        prodsHTML += `<h4>${producto.title}</h4>${producto.description} <br> Precio: $${producto.price} <br> id:  ${producto.id}<hr/>`;
-    });
-
-    // Actualizar la vista con los nuevos productos
-    productos.innerHTML = prodsHTML;
-
-});
-
-
