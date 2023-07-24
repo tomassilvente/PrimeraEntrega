@@ -33,6 +33,7 @@ router.get('/', async(req, res)=>{
         await productsModel.paginate({}, {limit, page, lean:true})
         const products = docs
         res.render('products',{
+            user: req.session.user,
             status,
             totalPages,
             products,
@@ -51,12 +52,16 @@ router.get('/products/:id', async(req,res)=>{
     res.render('product',{title, description, category, price, code, stock, _id})
 })
 
-router.get('/products/:cid/:pid/add', async(req, res)=>{
+router.post('/products/:cid/:pid/add', async(req, res)=>{
     const pid = req.params.pid
     const cid = req.params.cid
-    await cartsDBManager.saveProduct(pid,cid)
-    const {title, description, category, price, code, stock, _id} = await productDBManager.getById(pid)
-    res.render('product',{title, description, category, price, code, stock, _id})
+    const prod = await productDBManager.getById(pid)
+    if(prod){
+        await cartsDBManager.saveProduct(pid,cid)
+        const {title, description, category, price, code, stock, _id} = await productDBManager.getById(pid)
+        res.render('product',{title, description, category, price, code, stock, _id})
+    }
+    else res.status(400).send({status:"Error", error:"Producto no encontrado"})
 })
 
 router.get('/chat',async(req,res)=>{
@@ -71,10 +76,36 @@ router.get('/carts/:cid', async(req, res)=>{
         let prod = await productDBManager.getById(products[a]._id)
         productos.push(prod.title)     
     }
-    res.render("cart",{_id, productos})
-
-
-    
+    res.render("cart",{_id, productos})    
 })
+
+function auth(req,res,next){
+    console.log(req.session.user.admin)
+    if(req.session.user.admin) return next()
+    else return res.status(403).send("Usuario no autorizado para ingresar aquí")
+}
+
+router.get('/private', auth, (req, res)=>{
+    res.send("Buen dia ADMIN!!!!")
+})
+
+router.get("/register", (req, res) => {
+  res.render("register");
+});
+
+router.get("/login", (req, res) => {
+  res.render("login");
+});
+
+router.get('/logout', (req,res)=>{
+    req.session.destroy()
+    res.render('login',{message:'Sesión cerrada correctamente'})
+})
+
+router.get("/profile", (req, res) => {
+  res.render("profile", {
+    user: req.session.user,
+  });
+});
 
 export default router

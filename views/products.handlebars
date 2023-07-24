@@ -1,4 +1,11 @@
 <div>
+    <p>Bienvenido! {{user.name}}</p>
+    {{#if user.admin}}
+        <p>ADMINISTRADOR</p>
+    {{/if}}
+    
+    <a href="/private"> Acceso privado</a>
+    <a href="/logout"><button>LogOut</button></a>
     <h1>Todos los Productos</h1>
     <hr>
     <h2>Agregar un nuevo producto</h2>
