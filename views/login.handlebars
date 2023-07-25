@@ -1,14 +1,26 @@
-<div>
+<div class="container mt-5">
     {{message}}
     <h1>Login</h1>
     <form id="loginForm">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
+            <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input name="password" type="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <input type="submit" class="btn btn-primary">
+    </form>
+    {{!-- <form id="loginForm">
         <label>Email</label>
         <input name="email">
         <br/>
         <label>Contraseña</label>
         <input type="password" name="password">
         <input type="submit">
-    </form>
+    </form> --}}
     <p>¿No estás registrado? <a href="/register">Regístrate aquí</a></p>
 </div>
 <script src="../js/login.js"></script>

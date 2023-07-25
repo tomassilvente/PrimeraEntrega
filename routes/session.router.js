@@ -25,11 +25,11 @@ router.post('/login',async(req,res)=>{
     const {email,password}=req.body
     const user = await userModel.findOne({email,password});
     let adm = false
-    let rol = usuario
+    let rol = 'usuario'
     if(!user) return res.status(400).send({status:"error",error:"Incorrect credentials"})
     if(email === 'adminCoder@coder.com' && password ==='adminCod3r123') {
         adm = true
-        rol = admin
+        rol = 'admin'
     }
     req.session.user={
         name: `${user.first_name} ${user.last_name}`,
