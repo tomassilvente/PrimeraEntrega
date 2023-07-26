@@ -6,8 +6,10 @@ export default class Carts{
         console.log("Carritos trabajando con Mongo")
     }
 
-    getAll = async() =>{
-        let carts = await cartsModel.find().lean()
+    getAll = async(id) =>{
+        //let carts = await cartsModel.find().lean()
+        let query = id ? {_id: id} : {}
+        let carts = await cartsModel.find(query).populate('products._id')
         return carts
     }
 
