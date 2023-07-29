@@ -53,7 +53,7 @@ router.get('/products/:id', async(req,res)=>{
     res.render('product',{title, description, category, price, code, stock, _id})
 })
 
-router.post('/products/:cid/:pid/add', async(req, res)=>{
+router.get('/products/:cid/:pid/add', async(req, res)=>{
     const pid = req.params.pid
     const cid = req.params.cid
     const prod = await productDBManager.getById(pid)
