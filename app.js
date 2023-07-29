@@ -6,14 +6,17 @@ import MongoStore from 'connect-mongo'
 import { Server } from 'socket.io'
 import cookieParser from 'cookie-parser'
 import FileStore from 'session-file-store'
+import passport from 'passport'
 
 import { productDBManager } from './routes/products.router.js'
 import {__dirname} from "./utils.js"
+import initPassport from './config/passport.config.js'
 
 import productsRouter from './routes/products.router.js'
 import carsRouter from './routes/carts.router.js'
 import viewRouter from './routes/views.router.js'
 import sessionRouter from './routes/session.router.js'
+
 
 const fileStorage = FileStore(session)
 const app = express()
@@ -36,8 +39,11 @@ app.use(session({
     secret:"12345abcd",
     resave:false,
     saveUninitialized:false
-
 }))
+
+initPassport();
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))

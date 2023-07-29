@@ -3,6 +3,7 @@ import Products from "./dao/dbManagers/products.js"
 import Carts from "./dao/dbManagers/carts.js"
 import { productsModel } from "./dao/models/products.js"
 
+
 const router = express.Router()
 
 //let prodMan = new ProductManager('public/data/products')
@@ -93,7 +94,7 @@ router.get("/register", (req, res) => {
   res.render("register");
 });
 
-router.get("/login", (req, res) => {
+router.get("/login", async(req, res) => {
   res.render("login");
 });
 
