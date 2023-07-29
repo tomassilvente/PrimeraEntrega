@@ -99,8 +99,13 @@ router.get("/login", async(req, res) => {
 });
 
 router.get('/logout', (req,res)=>{
-    req.session.destroy()
-    res.render('login',{message:'Sesión cerrada correctamente'})
+    try{
+        req.session.destroy()
+        res.render('login',{message:'Sesión cerrada correctamente'})
+    }
+    catch(error){
+        return res.return(400).send({status:"error", error: error})
+    }
 })
 
 router.get("/profile", (req, res) => {

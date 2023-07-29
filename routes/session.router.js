@@ -24,33 +24,37 @@ router.get('/failRegister', async(req,res)=>{
 })
 
 router.post('/login',async(req,res)=>{
-    const { email, password } = req.body;
+    try{
+        const { email, password } = req.body;
 
-    if (!email || !password) return res.status(400).send({ status: "error", error: "Error User" });
+        if (!email || !password) return res.status(400).send({ status: "error", error: "Error User" });
 
-    const user = await userModel.findOne(
-        { email: email },
-        { email: 1, first_name: 1, last_name: 1, password: 1 }
-    );
-    const acceso =  generateToken(user)
-    let adm = false
-    let rol = 'usuario'
-    if (!user)
-        return res.status(400).send({ status: "error", error: "Error User" });
-    if (!isValidPassword(user, password))
-        return res.status(403).send({ status: "error", error: "Error Credential" });
-    if(email === 'adminCoder@coder.com' && password ==='adminCod3r123') {
-        adm = true
-        rol = 'admin'
+        const user = await userModel.findOne(
+            { email: email },
+            { email: 1, first_name: 1, last_name: 1, password: 1 }
+        );
+        const acceso =  generateToken(user)
+        let adm = false
+        let rol = 'usuario'
+        if (!user)
+            return res.status(400).send({ status: "error", error: "Error User" });
+        if (!isValidPassword(user, password))
+            return res.status(403).send({ status: "error", error: "Error Credential" });
+        if(email === 'adminCoder@coder.com' && password ==='adminCod3r123') {
+            adm = true
+            rol = 'admin'
+        }
+        req.session.user = {
+            name: `${user.first_name} ${user.last_name}`,
+            email:user.email,
+            age: user.age,
+            admin: adm,
+            rol: rol
+        };
+        res.send({ status: "success", payload: user ,acceso});
     }
-    req.session.user = {
-        name: `${user.first_name} ${user.last_name}`,
-        email:user.email,
-        age: user.age,
-        admin: adm,
-        rol: rol
-    };
-    res.send({ status: "success", payload: user ,acceso});
+    catch(error){res.return(400).send({status:"error", error: error})}
+    
 })
 
 router.get('/current', authToken, (req,res) =>{
@@ -58,22 +62,15 @@ router.get('/current', authToken, (req,res) =>{
 })
 
 router.post('/logout', async(req, res)=>{
-    req.session.destroy()
-    res.send({status:"success", message:"Sesión cerrada."})
+    try{
+        req.session.destroy()
+        res.send({status:"success", message:"Sesión cerrada."})
+    }
+    catch(error){res.return(400).send({status:"error", error: error})}
 })
 
 router.get('/github', passport.authenticate('github',{scope:['user:email']}), async(req, res)=>{
-    if(email === 'adminCoder@coder.com' && password ==='adminCod3r123') {
-        adm = true
-        rol = 'admin'
-    }
-    req.session.user = {
-        name: `${user.first_name} ${user.last_name}`,
-        email:user.email,
-        age: user.age,
-        admin: adm,
-        rol: rol
-    };
+    
 })
 
 router.get('/githubcallback', passport.authenticate('github',{failureRedirect:"/login"}), async(req, res)=>{
