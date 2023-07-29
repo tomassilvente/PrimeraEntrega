@@ -1,26 +1,25 @@
 <div class="container mt-3">
-    <p class="my-3">Bienvenido {{user.name}}</p>
+    <p class="mt-3">Bienvenido {{user.name}}</p>
     {{#if user.admin}}
         <p>ADMINISTRADOR</p>
     {{/if}}
-    
     <a href="/private"> Acceso privado</a>
-    <a href="/logout"><button>LogOut</button></a>
-    <h1 class="mt-3 text-center">Todos los Productos</h1>
+    <br>
+    <a class="mt-2 btn btn-danger" href="/logout">LogOut</a>
     <hr>
     <h2 class="mt-3 text-center">Agregar un nuevo producto</h2>
-    <form class="mt-3">
+    <form class="mt-3 text-center">
         <input class="rounded-2 my-1" type='text' name="title" id="title" placeholder="Producto">
         <input class="rounded-2 my-1" type='text' name="description" id="description" placeholder="descripcion">
         <input class="rounded-2 my-1" type='number' name="price" id="price" placeholder="precio">
         <input class="rounded-2 my-1" type='text' name="code" id="code" placeholder="codigo">
-        <br>
         <input class="rounded-2 my-1" type='text' name="status" id="status" placeholder="estado(true/false)">
         <input class="rounded-2 my-1" type='number' name="stock" id="stock" placeholder="stock">
         <input class="rounded-2 my-1" type='text' name="category" id="category" placeholder="categoria">
-        <button type="submit" id="form">Enviar!</button>
+        <button class="btn btn-success" type="submit" id="form">Enviar!</button>
     </form>
     <hr>
+    <h1 class="my-3 text-center">Todos los Productos</h1>
     <div class="row container text-center">
         {{#each products}}
             <div class="card rounded-4 m-2 col-3" style="width: 18rem;">
