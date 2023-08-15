@@ -1,5 +1,17 @@
-<div>
+<a class="boton mt-2 mb-3 btn btn-secondary" href="/">Inicio</a>
+<div class="container text-center">
     <h1>Carrito {{_id}}</h1>
-    <h3>Productos</h3>
-        {{productos}}
+    <hr />
+    <h3 class="my-4">Productos</h3>
+    <div class="container row p-4 border border-3 rounded-4">
+        {{#each productos}}
+            <div class="col-3 my-3">
+                <h5 class="mb-3">{{title}}: {{quantity}} </h5>
+                <p>Precio unitario: ${{price}}</p>
+                <p>Precio x{{quantity}}: ${{subT}}</p>
+                <a href="/deleteProd/64d178ac34e06a4786ec5b54/{{id}}" class="btn btn-danger">Quitar 1</a>
+            </div>
+        {{/each}}
+    <h3>Total: ${{total}}</h3>
+    </div>
 </div>

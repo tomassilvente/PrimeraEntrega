@@ -1,4 +1,14 @@
 body{
-    background-color: rgb(242, 217, 188);
-    font-size: 25px;
+    background-color: rgb(252, 236, 219);
+}
+h1, h2{
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+}
+.boton{
+    max-width: 80px;
+    margin-left: 5px;
+    max-height: 40px;
+}
+.add{
+   background-color:rgba(248, 179, 100, 0.392)
 }

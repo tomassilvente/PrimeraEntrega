@@ -1,24 +1,29 @@
 <div class="container mt-3">
-    <p class="mt-3">Bienvenido {{user.name}}</p>
-    {{#if user.admin}}
-        <p>ADMINISTRADOR</p>
-    {{/if}}
-    <a href="/private"> Acceso privado</a>
-    <br>
-    <a class="mt-2 btn btn-danger" href="/logout">LogOut</a>
-    <hr>
-    <h2 class="mt-3 text-center">Agregar un nuevo producto</h2>
-    <form class="mt-3 text-center">
-        <input class="rounded-2 my-1" type='text' name="title" id="title" placeholder="Producto">
-        <input class="rounded-2 my-1" type='text' name="description" id="description" placeholder="descripcion">
-        <input class="rounded-2 my-1" type='number' name="price" id="price" placeholder="precio">
-        <input class="rounded-2 my-1" type='text' name="code" id="code" placeholder="codigo">
-        <input class="rounded-2 my-1" type='text' name="status" id="status" placeholder="estado(true/false)">
-        <input class="rounded-2 my-1" type='number' name="stock" id="stock" placeholder="stock">
-        <input class="rounded-2 my-1" type='text' name="category" id="category" placeholder="categoria">
-        <button class="btn btn-success" type="submit" id="form">Enviar!</button>
-    </form>
-    <hr>
+    <div class="row">
+        <p class="mt-2 col-2 ">Bienvenido {{user}}</p>
+        <h1 class="col-8 text-center">Tienda</h1>
+        <a class="boton mt-2 mb-3 btn btn-success col-2" href="/carts/64d178ac34e06a4786ec5b54">Carrito</a>
+        <a class="boton mt-2 mb-3 btn btn-danger col-2" href="/logout">LogOut</a>
+        {{#if user.admin}}
+            <p>ADMINISTRADOR</p>
+            <a href="/private"> Acceso privado</a>
+        {{/if}}
+        
+    </div>
+    <div class="add py-4 mt-2 container rounded rounded-5 border border-secondary">
+        <h2 class=" text-center">Agregar un nuevo producto</h2>
+        <form class="mt-3 container text-center row">
+            <input class="rounded-2 my-1 col-3" type='text' name="title" id="title" placeholder="Producto">
+            <input class="rounded-2 my-1 col-3" type='text' name="description" id="description" placeholder="descripcion">
+            <input class="rounded-2 my-1 col-3" type='number' name="price" id="price" placeholder="precio">
+            <input class="rounded-2 my-1 col-3" type='text' name="code" id="code" placeholder="codigo">
+            <input class="rounded-2 my-1 col-3" type='text' name="status" id="status" placeholder="estado(true/false)">
+            <input class="rounded-2 my-1 col-3" type='number' name="stock" id="stock" placeholder="stock">
+            <input class="rounded-2 my-1 col-3"  type='text' name="category" id="category" placeholder="categoria">
+            <button class="btn btn-success boton col-2" type="submit" id="form">Enviar!</button>
+        </form>
+        
+    </div>
     <h1 class="my-3 text-center">Todos los Productos</h1>
     <div class="row container text-center">
         {{#each products}}
@@ -30,24 +35,17 @@
                     <a href="/products/{{_id}}" class="card-link">Detalle</a>
                 </div>
             </div>
-            {{!-- <b>{{title}}</b>
-            <br>
-            <p>{{description}}</p>
-            <p>Precio: ${{price}}</p>
-            <p>{{_id}}</p>
-            <a href="/products/{{_id}}"><button>Detalle</button></a>
-            <hr> --}}
         {{/each}}
     </div>
     {{#if hasPrevPage}}
-        <a href="/products?page={{prevPage}}"><button>Anterior</button></a>
+        <a class="btn btn-secondary btn-sm " href="/?page={{prevPage}}">Anterior</a>
     {{/if}}
     {{#if hasNextPage}}
-        <a href="/products?page={{nextPage}}"><button>Siguente</button></a>
+        <a class="btn btn-secondary btn-sm " href="/?page={{nextPage}}">Siguente</a>
     {{/if}}
     <br><br>
-        <a href="/products?page={{prevLink}}"><button>Página Anterior</button></a>
-        <a href="/products?page={{nextLink}}"><button>Página Siguente</button></a>
+        <a class="btn btn-secondary" href="/?page={{prevLink}}">Página Anterior</a>
+        <a class="btn btn-secondary" href="/?page={{nextLink}}">Página Siguente</a>
 
 </div>
 <script src="/socket.io/socket.io.js"></script>

@@ -31,29 +31,46 @@ const initPassport = () =>{
     }
     ))
 
-    passport.use('register', new LocalStrategy({passReqToCallback: true, usernameField: "email"},
-    async(req, username, password, done)=>{
-        const {first_name, last_name, email, age} = req.body
+    passport.use('register', new LocalStrategy({passReqToCallback: true, usernameField: "email", session:false},
+    async(req, email, password, done)=>{
         try{
-            let user = await userModel.findOne({email: username})
+            const {first_name, last_name, email, age} = req.body
+            if(!first_name || !last_name || !email ||!age) return done(null, false, {message:"Incomplete values"})
+            let user = await userModel.findOne({email: email})
             if(user) console.log('user already exists')
-            const newUser = {first_name, last_name, email, age, password: createHash(password)}
+            const newUser = {first_name, last_name, email, age,  password: createHash(password)}
             let result = await userModel.create(newUser)
+            return done(null, result)
         }
         catch (error){
             return done("Error de usuario "+ error)
         }
     }
     ))
-}
 
-passport.serializeUser((user,done)=>{
-    done(null,user.id)
-  })
+    passport.use('login', new LocalStrategy({passReqToCallback:true, usernameField:"email", session: false},
+    async( req, email, password, done)=>{
+        try{
+            const user = await userModel.findOne({email})
+            if(!user) return done(null, false, {message:"User not found"})
+            const validatePassword = isValidPassword(user, password)
+            if(!validatePassword) return done(null, false, {message:"Password Incorrect"})
+            return done(null, user)
+        }
+        catch(error){
+            return done("Error"+error)
+        }
+    }
+    ))
 
-  passport.deserializeUser(async(id,done)=>{
+    passport.serializeUser((user,done)=>{
+    done(null,user._id)
+    })
+
+    passport.deserializeUser(async(id,done)=>{
     let user= await userModel.findById(id)
-    done(null,user)
-  })
+    return done(null,user)
+    })
+}
 
 export default initPassport;

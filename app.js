@@ -18,7 +18,7 @@ import viewRouter from './routes/views.router.js'
 import sessionRouter from './routes/session.router.js'
 
 
-const fileStorage = FileStore(session)
+//const fileStorage = FileStore(session)
 const app = express()
 const httpserver = app.listen(8080, () => console.log("Server Arriba"))
 const socketServer = new Server(httpserver)

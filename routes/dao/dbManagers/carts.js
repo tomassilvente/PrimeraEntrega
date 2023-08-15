@@ -10,7 +10,7 @@ export default class Carts{
         //let carts = await cartsModel.find().lean()
         let query = id ? {_id: id} : {}
         let carts = await cartsModel.find(query).populate('products._id')
-        return carts
+        return carts.map(carts => carts.toObject())
     }
 
     getById = async id=>{
@@ -43,11 +43,20 @@ export default class Carts{
     deleteProduct = async(cid,pid) =>{
         const product = await productsModel.findById(pid)
         const cart = await cartsModel.findById(cid)
-        let item = cart.products.find(prod => prod.code === product.code)
-        if(item){
-            cart.products.pull(item)
-            await cart.save()
-            return await cartsModel.findById(cid)
+        let exist = cart.products.findIndex((p) => p._id.toString() === pid)
+        //await cartsModel.findById({_id:cid},{$dec:{"products.$[elem].quantity":1}},{arrayFilters:[{"elem._id":product._id}]})
+        if(exist !== -1){
+            if(cart.products[exist].quantity > 1) {
+                await cartsModel.findByIdAndUpdate({_id: cid},{$inc:{"products.$[elem].quantity":-1}},{arrayFilters:[{"elem._id":product._id}]})
+                const result = await cartsModel.findById(cid)
+                return result
+            }
+            else {
+                cart.products.pull(cart.products[exist])
+                cart.save()
+                const result = await cartsModel.findById(cid)
+                return result
+            }
         }
         else{
             console.log("No se encontro")

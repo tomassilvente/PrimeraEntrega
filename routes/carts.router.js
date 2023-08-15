@@ -6,8 +6,8 @@ import CartManager from "./management/CartsManager.js";
 import Products from "./dao/dbManagers/products.js";
 
 const router = Router()
-const prodManager = new ProductManager('public/data/products')
-const cartManager = new CartManager('public/data/carts')
+// const prodManager = new ProductManager('public/data/products')
+// const cartManager = new CartManager('public/data/carts')
 const prodDBManager = new Products
 const cartDBManager = new Carts()
 
@@ -29,7 +29,7 @@ router.post('/', uploader.single('file'), async function(req,res){
     let products = req.body
     for(let i = 0; i< products.length ; i++)
         if(! await prodDBManager.getById(products[i].id)) res.status(400).send({status:"Error", error:"Producto no Encontrado en productos.JSON"})
-    await cartManager.addProducts(products)
+    // await cartManager.addProducts(products)
     const result =  await cartDBManager.saveCarts()
     res.send({status:"OK", message:"Creado exitosamente",payload:result})  
 })
