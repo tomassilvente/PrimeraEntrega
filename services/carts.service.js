@@ -1,7 +1,7 @@
-import cartsModel from "../models/carts.js";
-import { productsModel } from "../models/products.js";
+import cartsModel from "../models/carts.model.js";
+import { productsModel } from "../models/products.model.js";
 
-export default class Carts{
+class Carts{
     constructor(){
         console.log("Carritos trabajando con Mongo")
     }
@@ -44,7 +44,6 @@ export default class Carts{
         const product = await productsModel.findById(pid)
         const cart = await cartsModel.findById(cid)
         let exist = cart.products.findIndex((p) => p._id.toString() === pid)
-        //await cartsModel.findById({_id:cid},{$dec:{"products.$[elem].quantity":1}},{arrayFilters:[{"elem._id":product._id}]})
         if(exist !== -1){
             if(cart.products[exist].quantity > 1) {
                 await cartsModel.findByIdAndUpdate({_id: cid},{$inc:{"products.$[elem].quantity":-1}},{arrayFilters:[{"elem._id":product._id}]})
@@ -83,3 +82,5 @@ export default class Carts{
         return await cartsModel.findById(cid)
     }
 }
+
+export default new Carts()

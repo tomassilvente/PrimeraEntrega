@@ -5,31 +5,33 @@ import mongoose from 'mongoose'
 import MongoStore from 'connect-mongo'
 import { Server } from 'socket.io'
 import cookieParser from 'cookie-parser'
-import FileStore from 'session-file-store'
 import passport from 'passport'
 
-import { productDBManager } from './routes/products.router.js'
+import Products  from './services/products.service.js'
+
 import {__dirname} from "./utils.js"
 import initPassport from './config/passport.config.js'
+import env from './environment/config/config.js'
 
-import productsRouter from './routes/products.router.js'
-import carsRouter from './routes/carts.router.js'
-import viewRouter from './routes/views.router.js'
 import sessionRouter from './routes/session.router.js'
+import productRouter from './routes/products.router.js'
+import cartRouter from './routes/carts.router.js'
+import viewRouter from './routes/views.router.js'
 
 
 //const fileStorage = FileStore(session)
 const app = express()
-const httpserver = app.listen(8080, () => console.log("Server Arriba"))
+const PORT = process.env.PORT
+const URI = process.env.MONGO_URI
+const httpserver = app.listen(PORT, () => console.log("Server Arriba"))
 const socketServer = new Server(httpserver)
 mongoose.connect(
-    "mongodb+srv://silventetomas:tomassilvente10@cluster0.w7dcotg.mongodb.net/?retryWrites=true&w=majority",
+    URI,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     }
 )
-
 app.use(session({
     store: MongoStore.create({
         mongoUrl:"mongodb+srv://silventetomas:tomassilvente10@cluster0.w7dcotg.mongodb.net/?retryWrites=true&w=majority",
@@ -55,12 +57,12 @@ app.use(express.static(__dirname+'/public'))
 
 app.use(cookieParser())
 app.use('/', viewRouter)
-app.use('/api/products',productsRouter)
-app.use('/api/carts',carsRouter)
+app.use('/api/products',productRouter.getRouter())
+app.use('/api/carts',cartRouter.getRouter())
 app.use('/api/session',sessionRouter)
 
 
-let products = await productDBManager.getAll()
+let products = await Products.getAll()
 const message = []
 
 socketServer.on('connection', socket=>{
@@ -68,14 +70,14 @@ socketServer.on('connection', socket=>{
     socketServer.emit('products',{products})
         
     socket.on('products',async data=>{
-        await productDBManager.saveProducts(data)
-        products = await productDBManager.getAll()
+        await Products.saveProducts(data)
+        products = await Products.getAll()
         socketServer.emit('products',{products})
     })
 
     socket.on('eliminar', async data=>{
-        await productDBManager.deleteProduct(data)
-        products = await productDBManager.getAll()
+        await Products.deleteProduct(data)
+        products = await Products.getAll()
         socketServer.emit('products',{products})
     })
 

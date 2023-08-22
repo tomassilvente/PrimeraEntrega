@@ -1,6 +1,6 @@
-import { productsModel } from "../models/products.js";
+import { productsModel } from "../models/products.model.js";
 
-export default class Products{
+class Products{
     constructor(){
         console.log("Productos trabajando con DB Mongo")
     }
@@ -41,3 +41,4 @@ export default class Products{
         return result
     }
 }
+export default new Products()

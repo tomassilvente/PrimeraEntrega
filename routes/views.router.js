@@ -1,18 +1,15 @@
 import express from "express"
-import Products from "./dao/dbManagers/products.js"
-import Carts from "./dao/dbManagers/carts.js"
-import { productsModel } from "./dao/models/products.js"
+import Products from "../services/products.service.js"
+import Carts from "../services/carts.service.js"
+import { productsModel } from "../models/products.model.js"
 
 
 const router = express.Router()
 
-//let prodMan = new ProductManager('public/data/products')
-let productDBManager = new Products()
-let cartsDBManager = new Carts()
 
 router.get('/realTimeProducts', async(req, res)=>{
     //let products = await prodMan.getProducts()
-    //let products = await productDBManager.getAll()
+    //let products = await Products.getAll()
     const {page = 1, limit = 8, sort = 1, query} = req.query
     const {docs, hasPrevPage, hasNextPage, nextPage, prevPage, prevLink, nextLink} = 
         await productsModel.paginate({}, {limit, page, lean:true})
@@ -56,16 +53,16 @@ router.get('/', async(req, res)=>{
 
 router.get('/products/:id', async(req,res)=>{
     const id = req.params.id
-    const {title, description, category, price, code, stock, _id} = await productDBManager.getById(id)  
+    const {title, description, category, price, code, stock, _id} = await Products.getById(id)  
     res.render('product',{title, description, category, price, code, stock, _id})
 })
 
 router.get('/products/:cid/:pid/add', async(req, res)=>{
     const pid = req.params.pid
     const cid = req.params.cid
-    const prod = await productDBManager.getById(pid)
+    const prod = await Products.getById(pid)
     if(prod){
-        await cartsDBManager.saveProduct(pid,cid)
+        await Carts.saveProduct(pid,cid)
         res.redirect(`/products/${pid}`)
     }
     else res.status(400).send({status:"Error", error:"Producto no encontrado"})
@@ -77,11 +74,11 @@ router.get('/chat',async(req,res)=>{
 
 router.get('/carts/:cid', async(req, res)=>{
     const cid = req.params.cid
-    const {_id, products} = await cartsDBManager.getById(cid)
+    const {_id, products} = await Carts.getById(cid)
     const productos = []
     let total = 0
     for(let a=0; a < products.length; a++){
-        let prod = await productDBManager.getById(products[a]._id)  
+        let prod = await Products.getById(products[a]._id)  
         let subT = prod.price * products[a].quantity
         total += subT
         productos.push({id:prod._id, title: prod.title, price:prod.price, subT:subT ,quantity:products[a].quantity})     
@@ -93,7 +90,7 @@ router.get('/deleteProd/:cid/:pid', async(req, res)=>{
     const cid = req.params.cid
     const pid = req.params.pid
     try{
-        await cartsDBManager.deleteProduct(cid, pid)
+        await Carts.deleteProduct(cid, pid)
         res.redirect(`/carts/${cid}`)
     }
     catch(error){
