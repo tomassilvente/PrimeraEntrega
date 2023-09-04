@@ -1,86 +1,77 @@
-import cartsModel from "../models/carts.model.js";
-import { productsModel } from "../models/products.model.js";
+import {getDAOS} from "../models/daos/indexDAO.js";
+import { HttpError, HTTP_STATUS } from '../utils/resourses.js'
 
-class Carts{
-    constructor(){
-        console.log("Carritos trabajando con Mongo")
-    }
+const {Carts} = getDAOS()
 
+class CartsServices{
     getAll = async(id) =>{
-        //let carts = await cartsModel.find().lean()
-        let query = id ? {_id: id} : {}
-        let carts = await cartsModel.find(query).populate('products._id')
-        return carts.map(carts => carts.toObject())
+        let result = Carts.getAll(id)
+        if (!result) throw new HttpError('Cart not found', HTTP_STATUS.NOT_FOUND)
+        else return result
     }
 
     getById = async id=>{
-        let cart = await cartsModel.findById(id)
-        return cart
+        if(!id) throw new HttpError('Missing param', HTTP_STATUS.BAD_REQUEST)
+        const result = await Carts.getById(id)
+        if (!result) throw new HttpError('Cart not found', HTTP_STATUS.NOT_FOUND)
+        else return result
     }
 
-    saveCarts = async cart=>{
-        let result = await cartsModel.create(cart)
-        return result
+    saveCarts = async (cart = [])=>{
+        if(cart){
+            let result = await Carts.saveCarts(cart)
+            return result
+        }
+        else throw new HttpError('Missing param', HTTP_STATUS.BAD_REQUEST)
     }
     
     saveProduct = async (pid, cid) =>{
-        const product = await productsModel.findById(pid)
-        const cart = await cartsModel.findById(cid)
-        let exist = cart.products.findIndex((p) => p._id.toString() === pid)
-        if(exist === -1){
-            const create = {$push: {products:{_id: product._id, quantity: 1}}}
-            await cartsModel.findByIdAndUpdate({_id: cid}, create)
-            
-            const result = await cartsModel.findById(cid)
-            return result
-        }
+        if(!cid || !pid) throw new HttpError('Missing param', HTTP_STATUS.BAD_REQUEST)
         else{
-            await cartsModel.findByIdAndUpdate({_id: cid},{$inc:{"products.$[elem].quantity":1}},{arrayFilters:[{"elem._id":product._id}]})
-            const result = await cartsModel.findById(cid)
+            let result = await Carts.saveProduct(pid, cid)
             return result
         }
     }
+
     deleteProduct = async(cid,pid) =>{
-        const product = await productsModel.findById(pid)
-        const cart = await cartsModel.findById(cid)
-        let exist = cart.products.findIndex((p) => p._id.toString() === pid)
-        if(exist !== -1){
-            if(cart.products[exist].quantity > 1) {
-                await cartsModel.findByIdAndUpdate({_id: cid},{$inc:{"products.$[elem].quantity":-1}},{arrayFilters:[{"elem._id":product._id}]})
-                const result = await cartsModel.findById(cid)
-                return result
-            }
-            else {
-                cart.products.pull(cart.products[exist])
-                cart.save()
-                const result = await cartsModel.findById(cid)
-                return result
-            }
-        }
+        if(!cid || !pid) throw new HttpError('Missing param', HTTP_STATUS.BAD_REQUEST)
         else{
-            console.log("No se encontro")
+            let result = await Carts.deleteProduct(pid, cid)
+            return result
         }
     }
+    
+    purchaseCart = async(cid)=>{
+        if(!cid ) throw new HttpError('Missing param', HTTP_STATUS.BAD_REQUEST)
+        else{
+            let result = await Carts.purchaseCart(cid)
+            return result
+        }
+    }
+
     updateCart = async(cid, newCart)=>{
-        const cart = await cartsModel.findById(cid)
-        if(cart){
-            await cartsModel.updateOne({_id:cid}, newCart)
+        if(!cid || !newCart) throw new HttpError('Missing param', HTTP_STATUS.BAD_REQUEST)
+        else{
+            let result = await Carts.updateCart(cid, newCart)
+            return result
         }
-        else console.log("No se encontro el carro")
-        return await cartsModel.find()
     }
+
     updateProdCart = async(cid, pid, quant) =>{
-        const prod = await productsModel.findById(pid)
-        await cartsModel.findByIdAndUpdate({_id: cid},{$inc:{"products.$[elem].quantity":quant}},{arrayFilters:[{"elem.code":prod.code}]})
-        return await cartsModel.findById(cid)
+        if(!cid || !pid || !quant) throw new HttpError('Missing param', HTTP_STATUS.BAD_REQUEST)
+        else{
+            let result = await Carts.updateProdCart(cid, pid, quant)
+            return result
+        }
     }
+
     deleteAll = async(cid) =>{
-        const cart = await cartsModel.findById(cid)
-        let products = cart.products
-        while(products.length>0) cart.products.pull(products[0])
-        cart.save()
-        return await cartsModel.findById(cid)
+        if(!cid) throw new HttpError('Missing param', HTTP_STATUS.BAD_REQUEST)
+        else{
+            let result = await Carts.deleteAll(cid)
+            return result
+        }
     }
 }
 
-export default new Carts()
+export default new CartsServices()

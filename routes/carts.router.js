@@ -11,6 +11,7 @@ class cartRouter{
         this.InicioCart.post('/:cid/products/:pid', uploader.single('file'), cartController.postProducts)
         this.InicioCart.put('/:cid', cartController.updateCart)
         this.InicioCart.put('/:cid/products/:pid', cartController.updateProducts)
+        this.InicioCart.put('/:cid/purchase', cartController.cartPurchase)
         this.InicioCart.delete('/:cid', cartController.deleteCart)
         this.InicioCart.delete('/:cid/products/:pid', cartController.deleteProducts)
     }

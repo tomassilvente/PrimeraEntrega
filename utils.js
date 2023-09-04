@@ -30,17 +30,22 @@ export const generateToken = (user)=>{
 
 export const authToken = (req,res, next)=>{
     const headerAuth = req.headers.authorization
-    if(!headerAuth) return res.status(401).send({status:'error', error:"No está autorizado"})
-    console.log(headerAuth)
+    if(!headerAuth) return res.status(401).send({status:'error', error:"No se proporcionó un token de autorización" })
 
     const token = headerAuth.split(' ')[1]
 
     jwt.verify(token, KEY, (error, credentials) =>{
-        console.log(error)
-        if(error) return res.status(401).send({status:'error', error:"No está autorizado"})
+        if(error) return res.status(401).send({status:'error', error: "Token inválido o expirado"})
         req.user = credentials.user
         next()
     })
+}
+
+export const isAdmin = (req, res, next) =>{
+    if(req.isAuthenticated() && req.user && req.user.role ==='admin'){
+        return next()
+    }
+    res.status(403).json({error:"Acceso no autorizado"})
 }
 
 export const __dirname = dirname(__filename)

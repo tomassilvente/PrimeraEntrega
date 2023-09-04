@@ -1,44 +1,45 @@
-import { productsModel } from "../models/products.model.js";
+import { HttpError, HTTP_STATUS } from '../utils/resourses.js'
+import {getDAOS} from '../models/daos/indexDAO.js'
 
-class Products{
-    constructor(){
-        console.log("Productos trabajando con DB Mongo")
+const {Products} = getDAOS()
+
+class ProductsService{
+   async getAll(){
+    let result = Products.getAll()
+        if (!result) throw new HttpError('Products not found', HTTP_STATUS.NOT_FOUND)
+        else return result
     }
 
-    getAll = async()=>{
-        let products = await productsModel.find().lean()
-        return products
-    }
-
-    getById = async id=>{
-        let result = await productsModel.findById(id)
-        return result
+    getById = async (id)=>{
+        if(!id) throw new HttpError('Missing param', HTTP_STATUS.BAD_REQUEST)
+        const result = await Products.getById(id)
+        if (!result) throw new HttpError('Products not found', HTTP_STATUS.NOT_FOUND)
+        else return result
     }
 
     saveProducts = async product=>{
         if(product.title || product.description || product.code || product.price || product.stock || product.category || product.price){
-            let result = await productsModel.create(product)
+            let result = await Products.saveProducts(product)
             return result
         }
-        else return console.log("Datos Faltantes")
+        else throw new HttpError('Missing param', HTTP_STATUS.BAD_REQUEST)
     }
 
     updateProduct = async (id,prod)=>{
-        let product = await productsModel.findById(id)
+        let product = await Products.getById(id)
         if(product)
             if(product.title || product.description || product.code || product.price || product.stock || product.category || product.price){
-                await productsModel.updateOne({_id:id}, prod)
+                await productsModel.updateProduct({_id:id}, prod)
             }
-            else console.log("Datos Faltantes")
-        else console.log("No hay producto para modificar.")
+            else throw new HttpError('Missing param', HTTP_STATUS.BAD_REQUEST)    
         const result = await productsModel.findById(id)
         return result
     }
 
     deleteProduct = async id=>{
-        await productsModel.deleteOne({_id:id})
-        const result = await productsModel.find()
-        return result
+        let product = await Products.getById(id)
+        if(product) await Products.deleteProduct({_id:id})
+        else throw new HttpError('Products not found', HTTP_STATUS.NOT_FOUND)
     }
 }
-export default new Products()
+export default new ProductsService()

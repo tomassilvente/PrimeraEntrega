@@ -15,6 +15,7 @@ router.post('/login',passport.authenticate('login',{ passReqToCallback:true ,fai
         name:`${req.user.first_name}`,
         role:req.user.role,
         email:req.user.email,
+        cart: req.user.cart
     };
     const token = jwt.sign(serialUser,'coderUser',{expiresIn:"1h"})
     res.cookie('cookie', token,{maxAge:36000000}).send({status:"Success", payload: serialUser})
@@ -37,11 +38,11 @@ router.post('/logout', async(req, res)=>{
         req.session.destroy()
         res.send({status:"success", message:"Sesión cerrada."})
     }
-    catch(error){res.return(400).send({status:"error", error: error})}
+    catch(error){res.status(400).send({status:"error", error: error})}
 })
 
 router.get('/github', passport.authenticate('github',{scope:['user:email']}), async(req, res)=>{
-    
+    console.log(req.session.user)
 })
 
 router.get('/githubcallback', passport.authenticate('github',{failureRedirect:"/login"}), async(req, res)=>{

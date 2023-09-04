@@ -1,15 +1,13 @@
 import express from "express"
 import Products from "../services/products.service.js"
 import Carts from "../services/carts.service.js"
-import { productsModel } from "../models/products.model.js"
+import { productsModel } from "../models/schemas/products.schema.js"
 
 
 const router = express.Router()
 
 
 router.get('/realTimeProducts', async(req, res)=>{
-    //let products = await prodMan.getProducts()
-    //let products = await Products.getAll()
     const {page = 1, limit = 8, sort = 1, query} = req.query
     const {docs, hasPrevPage, hasNextPage, nextPage, prevPage, prevLink, nextLink} = 
         await productsModel.paginate({}, {limit, page, lean:true})
@@ -53,6 +51,7 @@ router.get('/', async(req, res)=>{
 
 router.get('/products/:id', async(req,res)=>{
     const id = req.params.id
+    console.log(req.session)
     const {title, description, category, price, code, stock, _id} = await Products.getById(id)  
     res.render('product',{title, description, category, price, code, stock, _id})
 })
@@ -60,6 +59,7 @@ router.get('/products/:id', async(req,res)=>{
 router.get('/products/:cid/:pid/add', async(req, res)=>{
     const pid = req.params.pid
     const cid = req.params.cid
+    
     const prod = await Products.getById(pid)
     if(prod){
         await Carts.saveProduct(pid,cid)
@@ -97,6 +97,12 @@ router.get('/deleteProd/:cid/:pid', async(req, res)=>{
         res.status(400).send({status:"Error", error:error})
     }
     
+})
+
+router.get('/:cid/purchase', async(req, res)=>{
+    const cid = req.params.cid
+    let ticket = await Carts.purchaseCart(cid)
+    res.render("ticket",{ticket})
 })
 
 function auth(req,res,next){

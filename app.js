@@ -7,31 +7,28 @@ import { Server } from 'socket.io'
 import cookieParser from 'cookie-parser'
 import passport from 'passport'
 
-import Products  from './services/products.service.js'
-
 import {__dirname} from "./utils.js"
+import CONFIG from './config/config.js'
 import initPassport from './config/passport.config.js'
-import env from './environment/config/config.js'
 
 import sessionRouter from './routes/session.router.js'
 import productRouter from './routes/products.router.js'
 import cartRouter from './routes/carts.router.js'
 import viewRouter from './routes/views.router.js'
+import Products from './services/products.service.js'
 
-
-//const fileStorage = FileStore(session)
 const app = express()
 const PORT = process.env.PORT
 const URI = process.env.MONGO_URI
-const httpserver = app.listen(PORT, () => console.log("Server Arriba"))
+const httpserver = app.listen(CONFIG.PORT, () => console.log("Server Arriba"))
 const socketServer = new Server(httpserver)
-mongoose.connect(
-    URI,
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    }
-)
+// mongoose.connect(
+//     CONFIG.MONGO_URL,
+//     {
+//         useNewUrlParser: true,
+//         useUnifiedTopology: true,
+//     }
+// )
 app.use(session({
     store: MongoStore.create({
         mongoUrl:"mongodb+srv://silventetomas:tomassilvente10@cluster0.w7dcotg.mongodb.net/?retryWrites=true&w=majority",

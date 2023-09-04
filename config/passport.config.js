@@ -1,8 +1,10 @@
 import passport from 'passport'
 import local from 'passport-local'
-import userModel from "../models/Users.model.js"
+import userModel from "../models/schemas/Users.schema.js"
 import {createHash, isValidPassword} from '../utils.js'
 import GitHubStrategy from 'passport-github2'
+import cartController from '../controllers/cart.controller.js'
+
 
 const LocalStrategy = local.Strategy
 
@@ -21,7 +23,8 @@ const initPassport = () =>{
                     last_name: '',
                     email: profile._json.email,
                     age: '',
-                    password: ''
+                    password: '',
+                    cart: ''
                 }
                 let result = await userModel.create(newUser)
                 done(null, result)
@@ -37,8 +40,8 @@ const initPassport = () =>{
             const {first_name, last_name, email, age} = req.body
             if(!first_name || !last_name || !email ||!age) return done(null, false, {message:"Incomplete values"})
             let user = await userModel.findOne({email: email})
-            if(user) console.log('user already exists')
-            const newUser = {first_name, last_name, email, age,  password: createHash(password)}
+            if(user) return console.log('user already exists')
+            const newUser = {first_name, last_name, email, age, password: createHash(password)}
             let result = await userModel.create(newUser)
             return done(null, result)
         }

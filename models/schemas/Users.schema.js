@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import cartController from "../../controllers/cart.controller.js";
 
 const userCollection = 'Users'
 const userSchema = new mongoose.Schema({
@@ -10,8 +11,7 @@ const userSchema = new mongoose.Schema({
         type:String,
         require: true},
     cart: {
-        type:[{type: mongoose.SchemaTypes.ObjectId,
-        href:'Courses'}]
+        type:[{type: mongoose.SchemaTypes.ObjectId}],
     },
     role:{
         type:String,

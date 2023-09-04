@@ -1,37 +1,68 @@
 import Products from '../services/products.service.js'
+import { HTTP_STATUS, successResponse } from '../utils/resourses.js';
 
 class ProductsController{
     async getProducts (req, res){
-        //let products = await manager.getProducts()
-        let products = await Products.getAll()
-        res.send({products})
+        try{
+            let products = await Products.getAll()
+            const response = successResponse(products);
+            res.status(HTTP_STATUS.OK).json(response)
+        }
+        catch(error){
+            next(error)
+        }
     }
 
     async getProduct (req, res){
-        //let product = await manager.getProductById(req.params.pid)
-        let product = await Products.getById(req.params.pid)
-        res.send({product})
+        try{
+            let product = await Products.getById(req.params.pid)
+            const response = successResponse(product);
+            res.status(HTTP_STATUS.OK).json(response)
+        }
+        catch(error){
+            next(error)
+        }
     }
 
     async createProduct (req,res){
-        let product = req.body
-        let result = await Products.saveProducts(product)
-        res.send({status:"OK", message:"Producto agregado correctamente", payload:result})
+        try{
+            let product = req.body
+            let result = await Products.saveProducts(product)
+            const response = successResponse(result);
+            res.status(HTTP_STATUS.CREATED).json(response)        
+        }
+        catch(error){
+            next(error)
+        }
     }
 
     async updateProduct (req,res){
-        let id = req.params.pid
-        let product = req.body
-        if(product.id)
-            res.status(400).send({status:"Error", error:"No se puede modificar ID"})
-        else Products.uptdateProduct(id,product) //manager.updateProductById(id, product)
-        res.send({status:"OK",message:"Producto Modificado Exitosamente"})
+        try{
+            let id = req.params.pid
+            let product = req.body
+            if(product.id)
+            res.status(HTTP_STATUS.BAD_REQUEST) 
+            else {
+                result =  await Products.uptdateProduct(id,product)
+                const response = successResponse(result);
+                res.status(HTTP_STATUS.OK).json(response)  
+            }
+        }
+        catch(error){
+            next(error)
+        }
     }
 
     async deleteProduct (req,res){
-        let id = req.params.pid
-        Products.deleteProduct(id)
-        res.send({status:"OK", message:"Productos completamente eliminados"})
+        try{
+            let id = req.params.pid
+            let result = await Products.deleteProduct(id)
+            const response = successResponse(result);
+            res.status(HTTP_STATUS.OK).json(response)          
+        }
+        catch(error){
+            next(error)
+        }
     }
 }
 
