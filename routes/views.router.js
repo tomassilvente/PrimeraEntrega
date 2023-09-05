@@ -35,8 +35,11 @@ router.get('/', async(req, res)=>{
                 }
             ])
         }
+        let admin = (req.session.user.role ==='admin')
+        console.log(admin)
         res.render('products',{
             user: req.session.user,
+            admin,
             status,
             totalPages,
             products,
@@ -68,8 +71,9 @@ router.get('/products/:cid/:pid/add', async(req, res)=>{
     else res.status(400).send({status:"Error", error:"Producto no encontrado"})
 })
 
-router.get('/chat',async(req,res)=>{
-    res.render("chat",{})
+router.get('/chat' ,async(req,res)=>{
+    if (req.session.user.role === 'client') res.render("chat",{})
+    else res.status(403).send("Usuario no autorizado para ingresar aquí")
 })
 
 router.get('/carts/:cid', async(req, res)=>{
@@ -109,7 +113,7 @@ router.get('/:cid/purchase', async(req, res)=>{
 
 function auth(req,res,next){
     console.log(req.session.user.admin)
-    if(req.session.user.admin) return next()
+    if(req.session.user.role === 'admin') return next()
     else return res.status(403).send("Usuario no autorizado para ingresar aquí")
 }
 

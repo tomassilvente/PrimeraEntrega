@@ -31,7 +31,7 @@ router.get('/failRegister', async(req,res)=>{
 })
 
 router.get('/current', authToken, (req,res) =>{
-    res.send({status:"Success", payload:req.user})
+    res.send({status:"Success", payload:req.session.user})
 })
 
 router.post('/logout', async(req, res)=>{
@@ -48,7 +48,7 @@ router.get('/github', passport.authenticate('github',{scope:['user:email']}), as
 
 router.get('/githubcallback', passport.authenticate('github',{failureRedirect:"/login"}), async(req, res)=>{
     req.session.user={
-        name:`${req.user.first_name}`,
+        name:`${req.user.name}`,
         role:req.user.role,
         email:req.user.email,
         cart: req.user.cart
