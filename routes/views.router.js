@@ -102,6 +102,7 @@ router.get('/deleteProd/:cid/:pid', async(req, res)=>{
 router.get('/:cid/purchase', async(req, res)=>{
     const cid = req.params.cid
     let ticket = await Carts.purchaseCart(cid)
+    
     res.render("ticket",{ticket})
 })
 
