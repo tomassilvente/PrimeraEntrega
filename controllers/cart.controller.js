@@ -67,9 +67,10 @@ class cartController{
     async cartPurchase (req, res){
         try{
             let cid = req.params.cid
-            let result = await Carts.purchaseCart(cid)
+            let user = req.user
+            let result = await Carts.purchaseCart(cid, user)
             const response = successResponse(result);
-            res.status(HTTP_STATUS.OK).json(response)  
+            return res.status(HTTP_STATUS.OK).json(response)  
         }
         catch(error){
             next(error)

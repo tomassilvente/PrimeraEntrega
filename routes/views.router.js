@@ -103,6 +103,7 @@ router.get('/:cid/purchase', async(req, res)=>{
     const cid = req.params.cid
     const user = req.session.user
     let ticket = await Carts.purchaseCart(cid,user)
+    console.log(ticket)
     res.render("ticket",{ticket})
 })
 

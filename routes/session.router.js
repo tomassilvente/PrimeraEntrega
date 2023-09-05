@@ -12,11 +12,12 @@ router.post('/register',passport.authenticate('register',{ passReqToCallback:tru
 router.post('/login',passport.authenticate('login',{ passReqToCallback:true ,failureRedirect:'/failLogin', session:false, failureMessage:true}),async(req,res)=>{
     const serialUser = {
         id:req.user._id,
-        name:`${req.user.first_name}`,
+        name:`${req.user.first_name} ${req.user.last_name}`,
         role:req.user.role,
         email:req.user.email,
         cart: req.user.cart
     };
+    req.session.user = serialUser
     const token = jwt.sign(serialUser,'coderUser',{expiresIn:"1h"})
     res.cookie('cookie', token,{maxAge:36000000}).send({status:"Success", payload: serialUser})
 })
@@ -42,11 +43,18 @@ router.post('/logout', async(req, res)=>{
 })
 
 router.get('/github', passport.authenticate('github',{scope:['user:email']}), async(req, res)=>{
-    console.log(req.session.user)
+    
 })
 
 router.get('/githubcallback', passport.authenticate('github',{failureRedirect:"/login"}), async(req, res)=>{
-    req.session.user = req.user
+    req.session.user={
+        name:`${req.user.first_name}`,
+        role:req.user.role,
+        email:req.user.email,
+        cart: req.user.cart
+    }
+    console.log(req.user)
+    console.log(req.session.user)
     res.redirect('/')
 })
 

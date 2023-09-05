@@ -1,5 +1,5 @@
 import { MongoManager } from "../../../db/mongo/mongo.manager.js"
-import { ticketModel } from "../../../schemas/tickets.schema.js"
+import ticketModel  from "../../../schemas/tickets.schema.js"
 
 class Ticket{
     constructor(){

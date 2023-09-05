@@ -1,5 +1,7 @@
 <a class="boton mt-2 mb-3 btn btn-secondary" href="/">Inicio</a>
 <a class="boton mt-2 mb-3 btn btn-success" href="/carts/64d178ac34e06a4786ec5b54">Carrito</a>
 <div class="container mt-5 text-center">
-    <h1>{{ticket}}</h1>
+    <h1>{{ticket.purchaser.email}}</h1>
+    <h1>{{ticket.purchase_datetime}}</h1>
+    <h1>Total: ${{ticket.amount}}</h1>
 </div>

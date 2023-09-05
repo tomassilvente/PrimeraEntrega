@@ -36,7 +36,7 @@ class CartsServices{
     deleteProduct = async(cid,pid) =>{
         if(!cid || !pid) throw new HttpError('Missing param', HTTP_STATUS.BAD_REQUEST)
         else{
-            let result = await Carts.deleteProduct(pid, cid)
+            let result = await Carts.deleteProduct(cid, pid)
             return result
         }
     }
