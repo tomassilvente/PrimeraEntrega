@@ -7,7 +7,8 @@ class Ticket{
     }
 
    async generateTicket(ticket){
-    if(ticket.code || ticket.purchase_datetime || ticket.amount || ticket.purcharser){
+    if(ticket.purchase_datetime || ticket.amount || ticket.purcharser){
+        ticket.code = ticket.purcharser + ticket.purchase_datetime
         let result = await ticketModel.create(ticket)
         return result
     }

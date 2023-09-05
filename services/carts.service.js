@@ -41,10 +41,10 @@ class CartsServices{
         }
     }
     
-    purchaseCart = async(cid)=>{
+    purchaseCart = async(cid, user)=>{
         if(!cid ) throw new HttpError('Missing param', HTTP_STATUS.BAD_REQUEST)
         else{
-            let result = await Carts.purchaseCart(cid)
+            let result = await Carts.purchaseCart(cid,user)
             return result
         }
     }

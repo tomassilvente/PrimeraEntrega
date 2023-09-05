@@ -1,7 +1,9 @@
+import ticketController from "../../../../controllers/ticket.controller.js";
 import { HTTP_STATUS, HttpError } from "../../../../utils/resourses.js";
 import { MongoManager } from "../../../db/mongo/mongo.manager.js";
 import cartsModel from "../../../schemas/carts.schema.js"
 import { productsModel } from "../../../schemas/products.schema.js";
+import ticketModel from "../../../schemas/tickets.schema.js";
 
 class Carts{
     constructor(){
@@ -70,10 +72,13 @@ class Carts{
         else console.log("No se encontro el carro")
         return await cartsModel.find()
     }
-    purchaseCart = async(cid) =>{
+    purchaseCart = async(cid,user) =>{
         const cart = await cartsModel.findById(cid)
         let notBuy = []
-        let ticket = []
+        let ticket = [{
+            purchase_datetime: Date(),
+            purcharser: user.email,
+        }]
         let total = 0
         if(cart){
             for(let i = 0; i<cart.products.length; i++){
@@ -83,7 +88,6 @@ class Carts{
                 if(prod.stock > cart.products[i].quantity){
                     await productsModel.findByIdAndUpdate({_id:cart.products[i]._id},{$inc:{"stock": - (cart.products[i].quantity)}})
                     total += prod.price * cart.products[i].quantity
-                    ticket.push(prod.title, prod.price)
                 }
                 else notBuy.push(prod._id)
             }
@@ -91,7 +95,7 @@ class Carts{
         else return new HttpError("Cart not found", HTTP_STATUS.BAD_REQUEST)
         while(cart.products.length>0) cart.products.pull(cart.products[0])
         cart.save()
-        ticket.push("Total: "+total)
+        ticket.push({amount:total})
         if(notBuy.length > 0) ticket.push(`Couldn't buy ${notBuy} because of no stock`)
         return ticket
     }
