@@ -36,21 +36,23 @@ router.get('/', async(req, res)=>{
                 }
             ])
         }
-        let admin = (req.session.user.role ==='admin')
-        console.log(admin)
-        res.render('products',{
-            user: req.session.user,
-            admin,
-            status,
-            totalPages,
-            products,
-            hasPrevPage,
-            hasNextPage,
-            prevPage,
-            nextPage,
-            nextLink,
-            prevLink
-        })    
+        if(req.session.user){
+            let admin = (req.session.user.role ==='admin')
+            res.render('products',{
+                user: req.session.user,
+                admin,
+                status,
+                totalPages,
+                products,
+                hasPrevPage,
+                hasNextPage,
+                prevPage,
+                nextPage,
+                nextLink,
+                prevLink
+            })   
+        }
+        else res.redirect('/login')
 })
 
 router.get('/products/:id', async(req,res)=>{
