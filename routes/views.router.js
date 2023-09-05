@@ -2,6 +2,7 @@ import express from "express"
 import Products from "../services/products.service.js"
 import Carts from "../services/carts.service.js"
 import { productsModel } from "../models/schemas/products.schema.js"
+import { isClient } from "../utils.js"
 
 
 const router = express.Router()
@@ -54,15 +55,15 @@ router.get('/', async(req, res)=>{
 
 router.get('/products/:id', async(req,res)=>{
     const id = req.params.id
+    const user = req.session.user
     console.log(req.session)
     const {title, description, category, price, code, stock, _id} = await Products.getById(id)  
-    res.render('product',{title, description, category, price, code, stock, _id})
+    res.render('product',{user, title, description, category, price, code, stock, _id})
 })
 
-router.get('/products/:cid/:pid/add', async(req, res)=>{
+router.get('/products/:cid/:pid/add', isClient, async(req, res)=>{
     const pid = req.params.pid
     const cid = req.params.cid
-    
     const prod = await Products.getById(pid)
     if(prod){
         await Carts.saveProduct(pid,cid)

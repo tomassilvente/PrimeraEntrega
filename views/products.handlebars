@@ -2,7 +2,7 @@
     <div class="row">
         <p class="mt-2 col-2 ">Bienvenido, {{user.name}}</p>
         <h1 class="col-8 text-center">Tienda</h1>
-        <a class="boton mt-2 mb-3 btn btn-success col-2" href="/carts/64d178ac34e06a4786ec5b54">Carrito</a>
+        <a class="boton mt-2 mb-3 btn btn-success col-2" href="/carts/{{user.cart}}">Carrito</a>
         <a class="boton mt-2 mb-3 btn btn-danger col-2" href="/logout">LogOut</a>
         {{#if admin}}
             <p>ADMINISTRADOR</p>

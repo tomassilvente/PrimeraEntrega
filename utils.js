@@ -42,7 +42,15 @@ export const authToken = (req,res, next)=>{
 }
 
 export const isAdmin = (req, res, next) =>{
-    if(req.isAuthenticated() && req.user && req.user.role ==='admin'){
+    if(req.isAuthenticated() && req.session.user && req.session.user.role ==='admin'){
+        return next()
+    }
+    res.status(403).json({error:"Acceso no autorizado"})
+}
+
+export const isClient = (req, res, next) =>{
+    console.log(req.session.user.role)
+    if(req.session.user.role ==='client'){
         return next()
     }
     res.status(403).json({error:"Acceso no autorizado"})

@@ -1,10 +1,10 @@
 <a class="boton mt-2 mb-3 btn btn-secondary" href="/">Inicio</a>
-<a class="boton mt-2 mb-3 btn btn-success" href="/carts/64d178ac34e06a4786ec5b54">Carrito</a>
+<a class="boton mt-2 mb-3 btn btn-success" href="/carts/{{user.cart}}">Carrito</a>
 <div class="container mt-5 text-center">
     <h1>{{title}}</h1>
     <h2>${{price}}</h2>
     <h3>{{category}}, {{description}}</h3>
     <h4>Stock: {{stock}}</h4>
     <h4>Code: {{code}}</h4>
-    <a class="btn btn-primary mt-2" href="/products/64d178ac34e06a4786ec5b54/{{_id}}/add">Agregar al carrito</a>
+    <a class="btn btn-primary mt-2" href="/products/{{user.cart}}/{{_id}}/add">Agregar al carrito</a>
 </div>

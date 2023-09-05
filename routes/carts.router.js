@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { uploader } from "../utils.js";
+import { isClient, uploader } from "../utils.js";
 import cartController from "../controllers/cart.controller.js";
 
 class cartRouter{
@@ -8,7 +8,7 @@ class cartRouter{
         this.InicioCart.get('/', cartController.getCarts)
         this.InicioCart.get('/:cid', cartController.getCart)
         this.InicioCart.post('/', cartController.createCart)
-        this.InicioCart.post('/:cid/products/:pid', uploader.single('file'), cartController.postProducts)
+        this.InicioCart.post('/:cid/products/:pid', isClient ,uploader.single('file'), cartController.postProducts)
         this.InicioCart.put('/:cid', cartController.updateCart)
         this.InicioCart.put('/:cid/products/:pid', cartController.updateProducts)
         this.InicioCart.put('/:cid/purchase', cartController.cartPurchase)

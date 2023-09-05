@@ -6,6 +6,7 @@ import {authToken } from "../utils.js";
 const router=Router();
 
 router.post('/register',passport.authenticate('register',{ passReqToCallback:true , failureRedirect:'/failRegister', session:false, failureMessage:true}),async(req,res)=>{
+    
     res.send({ status: "success", message: "User registered" });
 })
 
