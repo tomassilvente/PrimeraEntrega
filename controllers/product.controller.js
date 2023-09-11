@@ -1,4 +1,5 @@
 import Products from '../services/products.service.js'
+import { generateProduct } from '../utils/mock.utils.js';
 import { HTTP_STATUS, successResponse } from '../utils/resourses.js';
 
 class ProductsController{
@@ -34,6 +35,21 @@ class ProductsController{
         catch(error){
             next(error)
         }
+    }
+
+    async mockingProducts(req,res){
+        try{
+            const total =+ req.query.total || 100
+            const products = Array.from({length:total}, () => generateProduct())
+            for(let aux=0; aux<total; aux++){
+                await Products.saveProducts(products[aux])
+            }
+            res.status(HTTP_STATUS.CREATED).json(products)
+        }
+        catch(error){
+            next(error)
+        }
+        
     }
 
     async updateProduct (req,res){

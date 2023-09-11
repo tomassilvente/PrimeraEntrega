@@ -6,8 +6,8 @@ import {authToken } from "../utils.js";
 const router=Router();
 
 router.post('/register',passport.authenticate('register',{ passReqToCallback:true , failureRedirect:'/failRegister', session:false, failureMessage:true}),async(req,res)=>{
-    
-    res.send({ status: "success", message: "User registered" });
+    res.redirect('/login')
+    // res.send({ status: "success", message: "User registered" });
 })
 
 router.post('/login',passport.authenticate('login',{ passReqToCallback:true ,failureRedirect:'/failLogin', session:false, failureMessage:true}),async(req,res)=>{
@@ -54,8 +54,6 @@ router.get('/githubcallback', passport.authenticate('github',{failureRedirect:"/
         email:req.user.email,
         cart: req.user.cart
     }
-    console.log(req.user)
-    console.log(req.session.user)
     res.redirect('/')
 })
 
