@@ -13,7 +13,7 @@ const initPassport = () =>{
     passport.use('github', new GitHubStrategy({
         clientID:"Iv1.5fe91e9f7a0acd82",
         clientSecret:"8a0d22086d50882e5638660402d09e4d6f4ffee9",
-        callbackURL:"http://localhost:8080/api/session/githubcallback"
+        callbackURL:"https://proyectocoderhouse.onrender.com/api/session/githubcallback"
     },
     async (accesToken, refreshToken, profile, done)=>{
         try{
