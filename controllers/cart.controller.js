@@ -3,7 +3,6 @@ import Products from "../services/products.service.js"
 import {HTTP_STATUS, successResponse} from '../utils/resourses.js'
 
 class cartController{
-
      async createCart (req,res,next){
         try {
             let products = req.body
@@ -14,7 +13,7 @@ class cartController{
             res.status(HTTP_STATUS.CREATED).json(response)  
         }
     catch(error){
-        next(error)
+        req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
         }
     }
     
@@ -28,7 +27,7 @@ class cartController{
             else res.status(HTTP_STATUS.NOT_FOUND)
         }
         catch(error){
-            next(error)
+            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
         }
     }
 
@@ -42,7 +41,7 @@ class cartController{
             else res.status(HTTP_STATUS.NOT_FOUND)    
         }
         catch(error){
-            next(error)
+            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
         }
     }
 
@@ -60,7 +59,7 @@ class cartController{
             }
         }
         catch(error){
-            next(error)
+            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
         }
     }
 
@@ -73,7 +72,7 @@ class cartController{
             return res.status(HTTP_STATUS.OK).json(response)  
         }
         catch(error){
-            next(error)
+            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
         }
     }
 
@@ -90,7 +89,7 @@ class cartController{
             else res.status(HTTP_STATUS.NOT_FOUND)
         }
         catch(error){
-            next(error)
+            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
         }
     }
 
@@ -107,7 +106,7 @@ class cartController{
             }
         }
         catch(error){
-            next(error)
+            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
         }
     }
 
@@ -126,7 +125,7 @@ class cartController{
             else res.status(HTTP_STATUS.BAD_REQUEST)  
         }
         catch(error){
-            next(error)
+            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
         }
     }
 
@@ -142,7 +141,7 @@ class cartController{
             else res.status(HTTP_STATUS.NOT_FOUND)
         }
         catch(error){
-            next(error)
+            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
         }
     }
 }

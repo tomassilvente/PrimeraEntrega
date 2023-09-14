@@ -1,7 +1,7 @@
 import express from 'express'
 import session from 'express-session'
 import handlebars from "express-handlebars"
-import mongoose from 'mongoose'
+
 import MongoStore from 'connect-mongo'
 import { Server } from 'socket.io'
 import cookieParser from 'cookie-parser'
@@ -16,19 +16,14 @@ import productRouter from './routes/products.router.js'
 import cartRouter from './routes/carts.router.js'
 import viewRouter from './routes/views.router.js'
 import Products from './services/products.service.js'
+import { addLogger } from './utils/logger.js'
 
 const app = express()
 const PORT = process.env.PORT
 const URI = process.env.MONGO_URI
 const httpserver = app.listen(CONFIG.PORT, () => console.log("Server Arriba"))
 const socketServer = new Server(httpserver)
-// mongoose.connect(
-//     CONFIG.MONGO_URL,
-//     {
-//         useNewUrlParser: true,
-//         useUnifiedTopology: true,
-//     }
-// )
+
 app.use(session({
     store: MongoStore.create({
         mongoUrl:"mongodb+srv://silventetomas:tomassilvente10@cluster0.w7dcotg.mongodb.net/?retryWrites=true&w=majority",
@@ -43,6 +38,8 @@ app.use(session({
 initPassport();
 app.use(passport.initialize())
 app.use(passport.session())
+
+app.use(addLogger)
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))

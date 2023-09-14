@@ -10,7 +10,7 @@ class ProductsController{
             res.status(HTTP_STATUS.OK).json(response)
         }
         catch(error){
-            next(error)
+            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
         }
     }
 
@@ -21,7 +21,7 @@ class ProductsController{
             res.status(HTTP_STATUS.OK).json(response)
         }
         catch(error){
-            next(error)
+            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
         }
     }
 
@@ -33,7 +33,7 @@ class ProductsController{
             res.status(HTTP_STATUS.CREATED).json(response)        
         }
         catch(error){
-            next(error)
+            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
         }
     }
 
@@ -47,7 +47,7 @@ class ProductsController{
             res.status(HTTP_STATUS.CREATED).json(products)
         }
         catch(error){
-            next(error)
+            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
         }
         
     }
@@ -65,7 +65,7 @@ class ProductsController{
             }
         }
         catch(error){
-            next(error)
+            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
         }
     }
 
@@ -77,7 +77,7 @@ class ProductsController{
             res.status(HTTP_STATUS.OK).json(response)          
         }
         catch(error){
-            next(error)
+            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
         }
     }
 }

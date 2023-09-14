@@ -7,29 +7,29 @@ const {Products} = getDAOS()
 class ProductsService{
    async getAll(){
     let result = Products.getAll()
-        if (!result) throw new HttpError(customError.createError({
+        if (!result) req.logger.fatal(new HttpError(customError.createError({
             name:"Error al obtener productos",
             cause: HTTP_STATUS.NOT_FOUND,
             message:"Fallo en el intento de obtener productos",
             code: EError.INVALID_TYPES_ERROR
-        }) )
+        })))
         else return result
     }
 
     getById = async (id)=>{
-        if(!id) throw new HttpError(customError.createError({
+        if(!id) req.logger.fatal(new HttpError(customError.createError({
             name:"Error al obtener producto",
             cause: HTTP_STATUS.BAD_REQUEST,
             message:"Faltan datos",
             code: EError.INVALID_TYPES_ERROR
-        }) )
+        })))
         const result = await Products.getById(id)
-        if (!result) throw new HttpError(customError.createError({
+        if (!result) req.logger.fatal(new HttpError(customError.createError({
             name:"Error al obtener producto",
             cause: HTTP_STATUS.NOT_FOUND,
             message:"Fallo en el intento de obtener producto",
             code: EError.INVALID_TYPES_ERROR
-        }) )
+        })))
         else return result
     }
 
@@ -38,12 +38,12 @@ class ProductsService{
             let result = await Products.saveProducts(product)
             return result
         }
-        else throw new HttpError(customError.createError({
+        else req.logger.fatal(new HttpError(customError.createError({
             name:"Error al crear producto",
             cause: HTTP_STATUS.BAD_REQUEST,
             message:"Faltan datos",
             code: EError.INVALID_TYPES_ERROR
-        }) )
+        })))
     }
 
     updateProduct = async (id,prod)=>{
@@ -52,12 +52,12 @@ class ProductsService{
             if(product.title || product.description || product.code || product.price || product.stock || product.category || product.price){
                 await productsModel.updateProduct({_id:id}, prod)
             }
-            else throw new HttpError(customError.createError({
+            else req.logger.fatal(new HttpError(customError.createError({
                 name:"Error al actualizar producto",
                 cause: HTTP_STATUS.BAD_REQUEST,
                 message:"Faltan datos",
                 code: EError.INVALID_TYPES_ERROR
-            }))    
+            })))
         const result = await productsModel.findById(id)
         return result
     }
@@ -65,12 +65,12 @@ class ProductsService{
     deleteProduct = async id=>{
         let product = await Products.getById(id)
         if(product) await Products.deleteProduct({_id:id})
-        else throw new HttpError(customError.createError({
+        else  req.logger.fatal(new HttpError(customError.createError({
             name:"Error al eliminar producto",
             cause: HTTP_STATUS.NOT_FOUND,
             message:"productos no encontrados",
             code: EError.INVALID_TYPES_ERROR
-        }) )
+        })))
     }
 }
 export default new ProductsService()
