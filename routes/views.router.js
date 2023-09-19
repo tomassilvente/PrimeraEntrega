@@ -7,7 +7,6 @@ import { isClient } from "../utils.js"
 
 const router = express.Router()
 
-
 router.get('/realTimeProducts', async(req, res)=>{
     const {page = 1, limit = 8, sort = 1, query} = req.query
     const {docs, hasPrevPage, hasNextPage, nextPage, prevPage, prevLink, nextLink} = 
@@ -147,5 +146,15 @@ router.get("/profile", (req, res) => {
     user: req.session.user,
   });
 });
+
+router.get('/test-logger', (req, res)=>{
+    req.logger.error("Esto es un error")
+    req.logger.warn("Esto es un warn")
+    req.logger.info("Esto es un info")
+    req.logger.http("Esto es un http")
+    req.logger.debug("Esto es un debug")
+    req.logger.fatal("Esto es un fatal")
+    res.send("Probando loggers")
+})
 
 export default router

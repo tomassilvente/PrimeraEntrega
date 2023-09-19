@@ -19,8 +19,6 @@ import Products from './services/products.service.js'
 import { addLogger } from './utils/logger.js'
 
 const app = express()
-const PORT = process.env.PORT
-const URI = process.env.MONGO_URI
 const httpserver = app.listen(CONFIG.PORT, () => console.log("Server Arriba"))
 const socketServer = new Server(httpserver)
 
@@ -40,7 +38,6 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use(addLogger)
-
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
