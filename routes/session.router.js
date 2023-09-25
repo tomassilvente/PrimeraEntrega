@@ -46,7 +46,7 @@ router.get('/sendMailReset',  async(req,res)=>{
             subject: 'Cambio de contraseña',
             html:`<div>  
                     <h1>Si usted pidió un cambio de constraseña, ingrese en el siguiente enlace </h1>
-                    <a href='https://proyectocoderhouse.onrender.com/resetPassword'> </a>
+                    <a href='https://proyectocoderhouse.onrender.com/resetPassword'> modificar contraseña </a>
                   </div>`,
         })
         res.redirect('/')
