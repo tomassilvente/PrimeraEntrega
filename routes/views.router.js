@@ -119,6 +119,10 @@ function auth(req,res,next){
     else return res.status(403).send("Usuario no autorizado para ingresar aquí")
 }
 
+router.get('/resetPassword', (req, res)=>{
+    res.render("resetPassword")
+})
+
 router.get('/private', auth, (req, res)=>{
     res.send("Buen dia ADMIN!!!!")
 })

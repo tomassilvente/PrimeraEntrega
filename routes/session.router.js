@@ -1,7 +1,9 @@
 import { Router } from "express";
 import passport from "passport";
 import  jwt  from "jsonwebtoken";
-import {authToken } from "../utils.js";
+import {authToken, createHash,isValidPassword } from "../utils.js";
+import MailingService from "../services/mailing.js";
+import  userModel  from "../models/schemas/Users.schema.js"
 
 const router=Router();
 
@@ -33,6 +35,36 @@ router.get('/failRegister', async(req,res)=>{
 
 router.get('/current', authToken, (req,res) =>{
     res.send({status:"Success", payload:req.session.user})
+})
+
+router.get('/sendMailReset',  async(req,res)=>{
+    try{
+        const mailer = new MailingService()
+        let result = await mailer.sendSimpleMail({
+            from: 'tomassilvente3@gmail.com',
+            to: req.session.user.email,
+            subject: 'Cambio de contraseña',
+            html:`<div>  
+                    <h1>Si usted pidió un cambio de constraseña, ingrese en el siguiente enlace </h1>
+                    <a href='https://proyectocoderhouse.onrender.com/resetPassword'> </a>
+                  </div>`,
+        })
+        res.redirect('/')
+    }
+    catch(error){
+        console.log(error)
+    }
+})
+
+router.post('/changePassword', async(req, res)=>{
+    let user = await userModel.findOne({email:req.session.user.email})
+    let data= req.body
+    let expassword = data.expassword
+    let newpassword = data.newpassword
+    if(isValidPassword(user, expassword) && newpassword != expassword)   await userModel.updateOne({_id:user.id},{$set:{'password': createHash(newpassword)}})
+    else console.log(user.password, expassword, newpassword)
+    res.cookie('cookie',{maxAge:36000000})
+    res.redirect('/')
 })
 
 router.post('/logout', async(req, res)=>{

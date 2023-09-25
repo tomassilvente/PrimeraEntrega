@@ -1,7 +1,7 @@
 import winston from 'winston'
 
 const levelOption={
-    level:{
+    levels:{
         fatal: 0,
         error: 1,
         warning: 2,
@@ -9,7 +9,7 @@ const levelOption={
         http: 4,
         debug: 5
     },
-    color:{
+    colors:{
         fatal: 'red',
         error: 'orange',
         warning: 'yellow',
@@ -20,25 +20,26 @@ const levelOption={
 }
 
 const logger = winston.createLogger({
+    levels: levelOption.levels, 
     transports: [
         new winston.transports.Console({
             level: "info",
             format: winston.format.combine(
-                winston.format.colorize({colors: levelOption.color}),
+                // winston.format.colorize({color: levelOption.colors.info}),
                 winston.format.simple()
             )
         }),
         new winston.transports.Console({
             level: "debug",
             format: winston.format.combine(
-                winston.format.colorize({colors: levelOption.color}),
+                // winston.format.colorize({color: levelOption.colors.debug}),
                 winston.format.simple()
             )
         }),
         new winston.transports.Console({
             level: "http",
             format: winston.format.combine(
-                winston.format.colorize({colors: levelOption.color}),
+                // winston.format.colorize({color: levelOption.colors.http}),
                 winston.format.simple()
             )
         }),
@@ -62,8 +63,9 @@ const logger = winston.createLogger({
 
 export const addLogger = (req, res, next) =>{
     req.logger = logger
-    req.logger.info(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
-    req.logger.http(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
+    // req.logger.error = logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
     req.logger.debug(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
     next()
 }
+
+

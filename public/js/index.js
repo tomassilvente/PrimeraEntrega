@@ -13,7 +13,8 @@ form.addEventListener('click', (evt)=>{
     let status = document.getElementById('status').value
     let stock = document.getElementById('stock').value
     let category = document.getElementById('category').value
-    let prod = {title,description,price,code,status,stock,category}
+    let owner = document.getElementById('email').value
+    let prod = {title,description,price,code,status,stock,category, owner}
     socket.emit('products', prod)
 })
 

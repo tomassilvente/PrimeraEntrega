@@ -10,7 +10,7 @@ class ProductsController{
             res.status(HTTP_STATUS.OK).json(response)
         }
         catch(error){
-            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
+            // req.logger
         }
     }
 
@@ -28,12 +28,14 @@ class ProductsController{
     async createProduct (req,res){
         try{
             let product = req.body
+            product.owner = req.session.user.email
+            console.log(product)
             let result = await Products.saveProducts(product)
             const response = successResponse(result);
             res.status(HTTP_STATUS.CREATED).json(response)        
         }
         catch(error){
-            req.logger.error(`${req.method} en ${req.url} -${new Date().toLocaleTimeString()}`)
+            console.log(error)
         }
     }
 

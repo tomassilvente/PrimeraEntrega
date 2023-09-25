@@ -36,6 +36,11 @@ const productchema = mongoose.Schema({
     thumbnail:{
         type:Array,
         default: []
+    },
+    owner: {
+        type: String, 
+        required: true,
+        default: 'admin'
     }
 })
 

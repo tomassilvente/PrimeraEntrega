@@ -1,6 +1,7 @@
 import { HttpError, HTTP_STATUS } from '../utils/resourses.js'
 import {getDAOS} from '../models/daos/indexDAO.js'
 import customError from '../utils/customErrors.js'
+import { isAdmin } from '../utils.js'
 
 const {Products} = getDAOS()
 
@@ -36,6 +37,7 @@ class ProductsService{
     saveProducts = async product=>{
         if(product.title || product.description || product.code || product.price || product.stock || product.category || product.price){
             let result = await Products.saveProducts(product)
+            console.log(result)
             return result
         }
         else req.logger.fatal(new HttpError(customError.createError({
@@ -50,7 +52,8 @@ class ProductsService{
         let product = await Products.getById(id)
         if(product)
             if(product.title || product.description || product.code || product.price || product.stock || product.category || product.price){
-                await productsModel.updateProduct({_id:id}, prod)
+                if(product.owner === req.session.user.email || isAdmin)
+                    await productsModel.updateProduct({_id:id}, prod)
             }
             else req.logger.fatal(new HttpError(customError.createError({
                 name:"Error al actualizar producto",
@@ -64,7 +67,9 @@ class ProductsService{
 
     deleteProduct = async id=>{
         let product = await Products.getById(id)
-        if(product) await Products.deleteProduct({_id:id})
+        if(product) 
+            if(product.owner === req.session.user.email)
+                await Products.deleteProduct({_id:id})
         else  req.logger.fatal(new HttpError(customError.createError({
             name:"Error al eliminar producto",
             cause: HTTP_STATUS.NOT_FOUND,

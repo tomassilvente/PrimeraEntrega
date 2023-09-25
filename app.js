@@ -24,7 +24,7 @@ const socketServer = new Server(httpserver)
 
 app.use(session({
     store: MongoStore.create({
-        mongoUrl:"mongodb+srv://silventetomas:tomassilvente10@cluster0.w7dcotg.mongodb.net/?retryWrites=true&w=majority",
+        mongoUrl:CONFIG.MONGO_URL ,
         mongoOptions:{ useNewUrlParser:true, useUnifiedTopology:true},
         ttl:3600
     }),
