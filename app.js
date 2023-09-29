@@ -6,6 +6,8 @@ import MongoStore from 'connect-mongo'
 import { Server } from 'socket.io'
 import cookieParser from 'cookie-parser'
 import passport from 'passport'
+import swaggerJSDoc from 'swagger-jsdoc'
+import { serve, setup } from 'swagger-ui-express'
 
 import {__dirname} from "./utils.js"
 import CONFIG from './config/config.js'
@@ -33,6 +35,26 @@ app.use(session({
     saveUninitialized:false
 }))
 
+const swaggerOption ={
+    definition:{
+        openapi: '3.0.0',
+        info:{
+            title:'Documentación de la API',
+            description:' Info de los Carts y Productos ',
+            version: '1.0.0',
+            contact:{
+                name: 'Tomás Silvente',
+                url: 'https://www.linkedin.com/in/tomas-silvente-a4b1951b2/'
+            }
+        }
+    },
+    // apis:[`${process.cwd()}/docs/*.yaml`],
+    // apis:[`${__dirname}/docs/**/*.yaml`],
+    apis:[`./docs/*.yaml`],
+    
+}
+const spec = swaggerJSDoc(swaggerOption)
+
 initPassport();
 app.use(passport.initialize())
 app.use(passport.session())
@@ -51,6 +73,7 @@ app.use('/', viewRouter)
 app.use('/api/products',productRouter.getRouter())
 app.use('/api/carts',cartRouter.getRouter())
 app.use('/api/session',sessionRouter)
+app.use('/apidocs',serve, setup(spec))
 
 
 let products = await Products.getAll()
@@ -77,3 +100,4 @@ socketServer.on('connection', socket=>{
         socketServer.emit('messageLog',message)
     })
 })
+

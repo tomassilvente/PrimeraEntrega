@@ -1,0 +1,116 @@
+paths:
+  /api/carts:
+      get:
+        summary: Obtiene la lista total de carts
+        tags:
+          - Carts 
+        responses:
+          "200":
+            description: Los carts fueron consultados correctamente
+          "500":
+            description: No se pudo entregar la información
+      post:
+        summary: Crea un nuevo carrito
+        tags:
+          - Carts 
+        responses:
+          "200":
+            description: El carrito fue creado correctamente
+          "500":
+            description: No se pudo entregar la información
+  /api/carts/{CartId}:
+      get:
+        summary: Obtiene un carrito en particular
+        tags:
+          - Carts 
+        responses:
+          "200":
+            description: El carrito fue consultado correctamente
+          "404":
+            description: No se pudo entregar la información para este ProductId
+          "500":
+            description: No se pudo entregar la información 
+      put:
+        summary: Actualiza un carrito en particular
+        tags:
+          - Carts 
+        responses:
+          "200":
+            description: El carrito fue consultado correctamente
+          "404":
+            description: No se pudo entregar la información para este ProductId
+          "400":
+            description: envio de información errada
+          "500":
+            description: No se pudo entregar la información 
+      delete:
+        summary: Elimina un carrito en particular
+        tags:
+          - Carts 
+        responses:
+          "200": 
+            description: El carrito fue eliminado correctamente
+          "404":
+            description: No se pudo entregar la información para este ProductId
+          "500":
+            description: No se pudo entregar la información
+  /api/carts/{CartId}/products/{ProductId}:
+      post:
+        summary: Inserta un producto dentro de un Carrito
+        tags:
+          - Carts 
+        responses:
+          "200":
+            description: El product fue agregado correctamente
+          "404":
+            description: No se pudo entregar la información para este ProductId/CartId
+          "500":
+            description: No se pudo entregar la información 
+      put:
+        summary: Actualiza un producto dentro de un carrito
+        tags:
+          - Carts 
+        responses:
+          "200":
+            description: El producto fue Actualizado correctamente
+          "404":
+            description: No se pudo entregar la información para este ProductId/CartId
+          "400":
+            description: envio de información errada
+          "500":
+            description: No se pudo entregar la información 
+      delete:
+        summary: Elimina un producto dentro de un carrito
+        tags:
+          - Carts 
+        responses:
+          "200": 
+            description: El producto fue eliminado correctamente
+          "404":
+            description: No se pudo entregar la información para este ProductId/CartId
+          "500":
+            description: No se pudo entregar la información
+  /api/carts/{CartId}/purchase:
+      post:
+        summary: Elimina los productos y genera un ticket de compra
+        tags:
+          - Carts 
+        responses:
+          "200":
+            description: El carrito fue comprado exitosamente
+          "404":
+            description: No se pudo entregar la información para este CartId
+          "500":
+            description: No se pudo entregar la información 
+
+components:
+  schemas:
+    carts:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          decription: autogenerado de mongo
+        products:
+          type: Array
+          decription: Arreglo con todos los productos dentro del carrito
