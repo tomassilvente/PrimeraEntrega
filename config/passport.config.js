@@ -3,7 +3,6 @@ import local from 'passport-local'
 import userModel from "../models/schemas/Users.schema.js"
 import {createHash, isValidPassword} from '../utils.js'
 import GitHubStrategy from 'passport-github2'
-import cartController from '../controllers/cart.controller.js'
 import cartsModel from '../models/schemas/carts.schema.js'
 
 
