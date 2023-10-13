@@ -40,11 +40,7 @@ describe("Carts Router test Case", ()=>{
         expect(response.statusCode).to.be.eql(400) 
         await dropProducts()
     })
-    it('[GET] api/products - todos los carros correctamente', async function(){
-        const response = await requester.get('/api/products')
-        expect(response.body.payload.length).to.be.eql(1)
-    })
-    it('[GET] api/products - todos los carros correctamente', async function(){
+    it('[GET] api/products - todos los productos correctamente', async function(){
         const response = await requester.get('/api/products')
         expect(response.body.payload.length).to.be.eql(1)
     })
