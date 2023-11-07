@@ -68,8 +68,17 @@ class ProductsService{
     deleteProduct = async id=>{
         let product = await Products.getById(id)
         if(product) 
-            if(product.owner === req.session.user.email)
-                await Products.deleteProduct({_id:id})
+            if(product.owner === req.session.user.email){
+                    await Products.deleteProduct({_id:id})
+                    const mailer = new MailingService()
+        let result = await mailer.sendSimpleMail({
+            from: 'tomassilvente3@gmail.com',
+            to: req.session.user.email,
+            subject: 'Producto Eliminado',
+            html:`<div>  
+                    <h1>Producto ${product} Exitosamente eliminado</h1>
+                  </div>`})
+                }
         else  req.logger.fatal(new HttpError(customError.createError({
             name:"Error al eliminar producto",
             cause: HTTP_STATUS.NOT_FOUND,

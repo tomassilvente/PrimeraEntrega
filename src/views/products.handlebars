@@ -7,8 +7,8 @@
         {{#if admin}}
             <p>ADMINISTRADOR</p>
             <a href="/private"> Acceso privado</a>
-            <a href="/api/session/sendMailReset"> Cambiar contraseña</a>
         {{/if}}
+        <a href="/api/session/sendMailReset"> Cambiar contraseña</a>
         
     </div>
     <div class="add py-4 mt-2 container rounded rounded-5 border border-secondary">
@@ -21,10 +21,9 @@
             <input class="rounded-2 my-1 col-3" type='text' name="status" id="status" placeholder="estado(true/false)">
             <input class="rounded-2 my-1 col-3" type='number' name="stock" id="stock" placeholder="stock">
             <input class="rounded-2 my-1 col-3"  type='text' name="category" id="category" placeholder="categoria">
-            <input class="rounded-2 my-1 col-3"  type='email' disabled="true" name="email" id="email" value={{user.email}} placeholder={{user.email}} >
+            <input class="rounded-2 my-1 col-3"  type='email' disabled="true" name="email" id="email" value={{user.email}} >
             <button class="btn btn-success boton col-2" type="submit" id="form">Enviar!</button>
         </form>
-        
     </div>
     <h1 class="my-3 text-center">Todos los Productos</h1>
     <div class="row container text-center">

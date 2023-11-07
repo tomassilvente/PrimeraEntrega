@@ -3,6 +3,7 @@ import Products from "../services/products.service.js"
 import Carts from "../services/carts.service.js"
 import { productsModel } from "../models/schemas/products.schema.js"
 import { isClient } from "../utils.js"
+import userModel from "../models/schemas/Users.schema.js"
 
 
 const router = express.Router()
@@ -159,6 +160,25 @@ router.get('/test-logger', (req, res)=>{
     req.logger.debug("Esto es un debug")
     req.logger.fatal("Esto es un fatal")
     res.send("Probando loggers")
+})
+
+router.get('/users', async(req,res)=>{
+    const users = await userModel.find()
+    const usuarios = []
+    for(let a=0; a<users.length; a++){
+        let user = users[a]
+        usuarios.push({first_name:user.first_name, last_name: user.last_name, email: user.email, role:user.role, id:user._id})
+    }
+    res.render('users',{usuarios})
+})
+
+router.get('/editUser/:uid' ,async(req, res)=>{
+    let id = req.params.uid
+    const {first_name, _id, last_name, email, role} = await userModel.findById(id)
+    // const usuario = []
+    // usuario.push({first_name:user.first_name, last_name: user.last_name, email: user.email, role:user.role, id:user._id})
+    // console.log(usuario)
+    res.render('editUser',{first_name, _id, last_name, email, role})
 })
 
 export default router

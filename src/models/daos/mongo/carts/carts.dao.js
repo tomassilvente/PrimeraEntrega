@@ -1,3 +1,4 @@
+import MailingService from "../../../../services/mailing.js";
 import { HTTP_STATUS, HttpError } from "../../../../utils/resourses.js";
 import { MongoManager } from "../../../db/mongo/mongo.manager.js";
 import cartsModel from "../../../schemas/carts.schema.js"
@@ -82,6 +83,15 @@ class Carts{
                 console.log(cart.products[i].quantity)
                 console.log(prod.stock)
                 if(prod.stock > cart.products[i].quantity){
+                    const mailer = new MailingService()
+                    let result = await mailer.sendSimpleMail({
+                        from: 'tomassilvente3@gmail.com',
+                        to: req.session.user.email,
+                        subject: 'Compra exitosa!',
+                        html:`<div>  
+                                <h1>Los siguientes productos fueron comprados exitosamente:</h1>
+                                <p> ${cart.products} </p>
+                            </div>`})
                     await productsModel.findByIdAndUpdate({_id:cart.products[i]._id},{$inc:{"stock": - (cart.products[i].quantity)}})
                     total += prod.price * cart.products[i].quantity
                 }

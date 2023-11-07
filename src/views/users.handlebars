@@ -1,0 +1,11 @@
+{{#each usuarios}}
+        <div class="card rounded-4 m-2 col-3" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title mb-2">{{first_name}} {{last_name}}</h5>
+                    <h6 class="card-subtitle mb-2 ">{{email}}</h6>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">{{role}}</h6>
+                    <a href="/api/users/delete/{{id}}" class="card-link">Eliminar</a>
+                    <a href="/editUser/{{id}}" class="card-link">modificar</a>
+                </div>
+            </div>
+{{/each}}

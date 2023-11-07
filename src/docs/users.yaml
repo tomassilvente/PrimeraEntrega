@@ -1,0 +1,46 @@
+paths:
+  /api/users:
+    get:
+      summary: Obtiene los datos del usuario
+      responses:
+        "200":
+          description: Los usuarios se obtuvieron correctamente
+          content:
+            aplication/json:
+              schemas:
+                type: array
+                
+        "500":
+          description: Hubo un error
+    post:
+      summary: Creacion del usuario
+      responses:
+        "200":
+          description: Los usuarios se crearon correctamente
+        "500":
+          description: Hubo un error
+
+components:
+  requestBodies:
+    nuevoUsuario:
+      type: Object
+      properties:
+        first_name:
+          type: String
+          description: Primer nombre del usuario
+        last_name:
+          type: String
+          description: Apellido del usuario
+      example:
+        first_name: Test
+        last_name: Test
+  schemas:
+    User:
+      type: Object
+      properties:
+        first_name:
+          type: String
+          description: Primer nombre del usuario
+        last_name:
+          type: String
+          description: Apellido del usuario

@@ -22,8 +22,9 @@ router.post('/login',passport.authenticate('login',{ passReqToCallback:true ,fai
         cart: req.user.cart
     };
     req.session.user = serialUser
-    const token = jwt.sign(serialUser,'coderUser',{expiresIn:"1h"})
-    res.cookie('cookie', token,{maxAge:36000000}).send({status:"Success", payload: serialUser})
+    const token = jwt.sign(serialUser,'coderUser',{expiresIn:"48h"})
+    
+    res.cookie('cookie', token,{maxAge:60 * 60 * 24 * 2 * 1000}).send({status:"Success", payload: serialUser})
 })
 
 router.get('/failLogin', (req,res)=>{
@@ -37,6 +38,8 @@ router.get('/failRegister', async(req,res)=>{
 router.get('/current', authToken, (req,res) =>{
     res.send({status:"Success", payload:req.session.user})
 })
+
+
 
 const resetTokens = new Map();
 const tokenExpiration = 3600000;

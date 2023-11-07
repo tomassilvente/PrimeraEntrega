@@ -1,0 +1,15 @@
+        <h1 class="m-5"> Modificar Usuario {{user.first_name}}</h1>
+<form id="editUser" class="row m-5" >
+            <input class="rounded-2 my-1 col-3 w-50" disabled="true"  type='text' name="id" id="id" value={{_id}} >
+            <span>Primer Nombre</span>
+            <input class="rounded-2 my-1 col-3 w-50" type='text' name="first" id="first" value={{first_name}}>
+            <span>Apellido</span>
+            <input class="rounded-2 my-1 col-3 w-50" type='text' name="last" id="last" value={{last_name}}>
+            <span>Rol</span>
+            <input class="rounded-2 my-1 col-3 w-50" type='text' name="role" id="role" value={{role}}>
+            <span>email</span>
+            <input class="rounded-2 my-1 col-3 w-50"  type='email' name="email" id="email" value={{email}} >
+            <hr />
+            <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+</form>
+<script src="../js/editProfile.js"></script>

@@ -5,10 +5,9 @@ import {createHash, isValidPassword} from '../utils.js'
 import GitHubStrategy from 'passport-github2'
 import cartsModel from '../models/schemas/carts.schema.js'
 
-
 const LocalStrategy = local.Strategy
 
-const initPassport = () =>{
+const initPassport = async() =>{
     passport.use('github', new GitHubStrategy({
         clientID:"Iv1.5fe91e9f7a0acd82",
         clientSecret:"8a0d22086d50882e5638660402d09e4d6f4ffee9",
@@ -53,16 +52,16 @@ const initPassport = () =>{
     ))
 
     passport.use('login', new LocalStrategy({passReqToCallback:true, usernameField:"email", session: false},
-    async( req, email, password, done)=>{
+    async(req, email, password, done)=>{
         try{
-            const user = await userModel.findOne({email})
+            const user = await userModel.findOne({email: email})
             if(!user) return done(null, false, {message:"User not found"})
             const validatePassword = isValidPassword(user, password)
             if(!validatePassword) return done(null, false, {message:"Password Incorrect"})
             return done(null, user)
         }
         catch(error){
-            return done("Error"+error)
+            return done(error)
         }
     }
     ))

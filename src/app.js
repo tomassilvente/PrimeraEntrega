@@ -12,13 +12,14 @@ import { serve, setup } from 'swagger-ui-express'
 import {__dirname} from "./utils.js"
 import CONFIG from './config/config.js'
 import initPassport from './config/passport.config.js'
-
+import  jwt  from "jsonwebtoken";
+import usersRouter from './routes/users.router.js'
 import sessionRouter from './routes/session.router.js'
 import productRouter from './routes/products.router.js'
 import cartRouter from './routes/carts.router.js'
 import viewRouter from './routes/views.router.js'
 import Products from './services/products.service.js'
-import { addLogger } from './utils/logger.js'
+import addLogger from './middleware/logger.middleware.js'
 
 const app = express()
 const httpserver = app.listen(CONFIG.PORT, () => console.log("Server Arriba"))
@@ -57,9 +58,11 @@ const spec = swaggerJSDoc(swaggerOption)
 
 initPassport();
 app.use(passport.initialize())
+app.use(cookieParser())
 app.use(passport.session())
 
 app.use(addLogger)
+
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
@@ -68,13 +71,12 @@ app.set('views', __dirname+'/views')
 app.set('view engine','handlebars')
 app.use(express.static(__dirname+'/public'))
 
-app.use(cookieParser())
 app.use('/', viewRouter)
 app.use('/api/products',productRouter.getRouter())
 app.use('/api/carts',cartRouter.getRouter())
 app.use('/api/session',sessionRouter)
+app.use('/api/users',usersRouter)
 app.use('/apidocs',serve, setup(spec))
-
 
 let products = await Products.getAll()
 const message = []
